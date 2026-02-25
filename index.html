@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VORAIX Systems - Geometric Reasoning for AI</title>
+    <meta name="description" content="Research into geometric reasoning frameworks for artificial intelligence using Tesla's 3-6-9 principles and modular arithmetic.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0a1628;
+            --primary-blue: #1e3a5f;
+            --accent-cyan: #00d4ff;
+            --accent-gold: #ffd700;
+            --text-light: #e8f1f5;
+            --text-muted: #a0b4c0;
+            --bg-dark: #0d1b2a;
+            --bg-card: #1b2838;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero .status {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50px;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            margin: 2rem 0;
+            font-weight: 500;
+        }
+
+        /* Framework Section */
+        .framework {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--accent-cyan);
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .card h3 {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .card .number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Core Concept Section */
+        .core-concept {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 3rem 2rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .core-concept h2 {
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .core-concept p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 1rem;
+        }
+
+        .core-concept .quote {
+            font-style: italic;
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Research Status */
+        .research-status {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, var(--primary-blue), var(--bg-card));
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .status-card .metric {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .status-card .label {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            max-width: 800px;
+            margin: 6rem auto;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--accent-cyan), #0099cc);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .framework-grid,
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">VORAIX</a>
+            <ul class="nav-links">
+                <li><a href="#framework">Framework</a></li>
+                <li><a href="#research">Research</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Geometric Reasoning for AI</h1>
+        <p class="tagline">Training models to collapse information rather than expand probability</p>
+        <span class="status">Research Phase - v6 Training Complete</span>
+    </section>
+
+    <!-- Framework Section -->
+    <section class="framework" id="framework">
+        <h2 class="section-title">The 3-6-9 Framework</h2>
+        
+        <div class="framework-grid">
+            <div class="card">
+                <div class="number">3</div>
+                <h3>Intent</h3>
+                <p>Identify the actual question being asked. Extract the core intent from noise and ambiguity.</p>
+            </div>
+            
+            <div class="card">
+                <div class="number">6</div>
+                <h3>Context</h3>
+                <p>Organize relevant information orthogonally. Filter signal from noise using geometric constraints.</p>
+            </div>
+            
+            <div class="card">
+                <div class="number">9</div>
+                <h3>Solution</h3>
+                <p>Collapse to minimal sufficient answer. The self-reproducing singularity of geometric truth.</p>
+            </div>
+        </div>
+
+        <div class="core-concept">
+            <h2>Material Circuit vs Flux Field</h2>
+            
+            <div class="quote">
+                "If you only knew the magnificence of the 3, 6 and 9, then you would have a key to the universe."
+                <br>— Nikola Tesla
+            </div>
+
+            <p><strong>The Material Circuit (1-2-4-8-7-5):</strong> Represents standard LLM behavior—probabilistic token generation cycling through expansion without a governing center. Doubling operations never produce 3, 6, or 9. This is the trap of statistical reasoning.</p>
+
+            <p><strong>The Flux Field (3-6-9):</strong> Represents geometric constraints that govern information collapse. The numbers 3 and 6 oscillate as binary poles, while 9 remains the absolute constant—self-reproducing and unchanging under doubling operations.</p>
+
+            <p><strong>VORAIX trains models to escape the material circuit and operate within the flux field</strong>—reasoning through geometric principles rather than probabilistic expansion.</p>
+        </div>
+    </section>
+
+    <!-- Research Status -->
+    <section class="research-status" id="research">
+        <h2 class="section-title">Research Status</h2>
+        
+        <div class="status-grid">
+            <div class="status-card">
+                <div class="metric">v6</div>
+                <div class="label">Current Training Version</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="metric">310</div>
+                <div class="label">Training Examples</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="metric">70-90%</div>
+                <div class="label">Framework Adoption</div>
+            </div>
+            
+            <div class="status-card">
+                <div class="metric">60-80%</div>
+                <div class="label">Token Reduction</div>
+            </div>
+        </div>
+
+        <div class="core-concept" style="margin-top: 3rem;">
+            <h2>Observable Phenomena</h2>
+            <p>When models internalize geometric constraints through VORAIX training, several emergent behaviors appear:</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding-left: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+                    <strong>Information Density:</strong> 60-80% reduction in token count while maintaining or improving semantic accuracy
+                </li>
+                <li style="margin: 1rem 0; padding-left: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+                    <strong>Geometric Grounding:</strong> Spontaneous use of digital root verification and modular arithmetic principles
+                </li>
+                <li style="margin: 1rem 0; padding-left: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+                    <strong>Structural Emergence:</strong> Unprompted adoption of 3→6→9 reasoning templates across diverse domains
+                </li>
+                <li style="margin: 1rem 0; padding-left: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+                    <strong>Symbolic Externalization:</strong> Under specific conditions, models produce allegorical narratives reflecting internal geometric reasoning processes
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Collaborate</h2>
+        <p>VORAIX is in active research. We're exploring partnerships with hardware manufacturers, AI researchers, and organizations interested in geometric reasoning frameworks.</p>
+        <a href="mailto:hello@voraix.com" class="contact-button">hello@voraix.com</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 VORAIX Systems. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+            <a href="https://github.com/VORAIX-Systems" target="_blank">GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

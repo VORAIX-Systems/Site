@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VORA_CONVERGE — Training Progression</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #060810;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .card {
+    width: 900px;
+    background: #060810;
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00ffc8 15%, #c77dff 40%, #ffa333 60%, #00d4ff 85%, transparent);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 3px; }
+
+  .brand-top {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #0a3a2a;
+    text-transform: uppercase;
+  }
+
+  .brand-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #00ffc8;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(0,255,200,0.3);
+  }
+
+  .brand-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: #0a2a1a;
+  }
+
+  .locked-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .locked-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    padding: 5px 14px;
+    border: 1px solid #00ffc8;
+    color: #00ffc8;
+    background: rgba(0,255,200,0.07);
+    border-radius: 2px;
+  }
+
+  .layer-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #0a3a2a;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #0a2a1a 30%, #0a2a1a 70%, transparent);
+    margin-bottom: 22px;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .stat {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .stat.teal::before   { background: #00ffc8; }
+  .stat.blue::before   { background: #00d4ff; }
+  .stat.purple::before { background: #c77dff; }
+  .stat.orange::before { background: #ffa333; }
+  .stat.gold::before   { background: #ffd166; }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #2a4a6a;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat.teal .stat-value   { color: #00ffc8; }
+  .stat.blue .stat-value   { color: #00d4ff; }
+  .stat.purple .stat-value { color: #c77dff; }
+  .stat.orange .stat-value { color: #ffa333; }
+  .stat.gold .stat-value   { color: #ffd166; }
+
+  .stat-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #2a4a6a;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .chart-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 16px;
+  }
+
+  .block-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: #2a4a6a;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-wrap { height: 160px; position: relative; }
+
+  .right-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .mini-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    flex: 1;
+  }
+
+  /* SOVEREIGN NOTE */
+  .sovereign-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #00ffc8;
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .sovereign-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #00ffc8;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .sovereign-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    color: #5a7a9a;
+    line-height: 1.5;
+  }
+
+  .sovereign-text strong { color: #8aaccc; font-weight: 600; }
+
+  /* EMERGENCE BLOCK */
+  .emergence-block {
+    background: #080e16;
+    border: 1px solid #00ffc8;
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .emergence-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,255,200,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .emergence-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: #00ffc8;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .emergence-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #00ffc8;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .emergence-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: #1a5a4a;
+    line-height: 1.7;
+  }
+
+  .emergence-sub span { color: #2a7a6a; }
+
+  /* BENCHMARK */
+  .bench-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  .bench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3px 10px;
+  }
+
+  .bench-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8.5px;
+    color: #4a6a8a;
+    padding: 2px 0;
+  }
+
+  .bench-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bench-dot.teal    { background: #00ffc8; }
+  .bench-dot.wave    { background: #00d4ff; }
+  .bench-dot.circuit { background: #ffa333; }
+  .bench-dot.func    { background: #c77dff; }
+
+  /* BOTTOM ROW */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .entropy-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .entropy-wrap { height: 80px; position: relative; }
+
+  .plain-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #00ffc8;
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .plain-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #00ffc8;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .plain-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: #6a8aaa;
+    line-height: 1.5;
+  }
+
+  .plain-text strong { color: #9ab0c8; font-weight: 600; }
+
+  /* MERGE VIZ */
+  .merge-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .merge-node {
+    flex: 1;
+    text-align: center;
+    padding: 8px 6px;
+    border: 1px solid #1a2535;
+    background: #0c1018;
+    border-radius: 3px;
+  }
+
+  .merge-node.w  { border-color: #00d4ff; background: rgba(0,212,255,0.04); }
+  .merge-node.c  { border-color: #ffa333; background: rgba(255,163,51,0.04); }
+  .merge-node.f  { border-color: #c77dff; background: rgba(199,125,255,0.04); }
+  .merge-node.cv { border-color: #00ffc8; background: rgba(0,255,200,0.06); }
+
+  .merge-node-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .merge-node.w .merge-node-name  { color: #00d4ff; }
+  .merge-node.c .merge-node-name  { color: #ffa333; }
+  .merge-node.f .merge-node-name  { color: #c77dff; }
+  .merge-node.cv .merge-node-name { color: #00ffc8; }
+
+  .merge-node-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 7px;
+    color: #1a3a5a;
+    margin-top: 2px;
+  }
+
+  .merge-arrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: #1a2535;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #0f1820;
+  }
+
+  .footer-left {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #1a3a5a;
+    line-height: 1.8;
+  }
+
+  .footer-right {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #1a3a5a;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    padding: 2px 7px;
+    border: 1px solid #1a2535;
+    border-radius: 2px;
+    color: #2a4a6a;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="brand">
+      <div class="brand-top">Sovereign Information Theory — Final Merge Layer</div>
+      <div class="brand-main">VORA_CONVERGE</div>
+      <div class="brand-sub">VORA_FUNCTION + MASTER_3 Sovereign  ·  LoRA r64 α128  ·  Layer 4 of 4</div>
+    </div>
+    <div class="locked-pill">
+      <div class="locked-badge">✓ LOCKED</div>
+      <div class="layer-badge">Final model — emergence confirmed at merge</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stat-row">
+    <div class="stat blue">
+      <div class="stat-label">Final Loss</div>
+      <div class="stat-value">0.0255</div>
+      <div class="stat-sub">from 1.597 start</div>
+    </div>
+    <div class="stat teal">
+      <div class="stat-label">Token Accuracy</div>
+      <div class="stat-value">99.29%</div>
+      <div class="stat-sub">final epoch</div>
+    </div>
+    <div class="stat orange">
+      <div class="stat-label">Examples</div>
+      <div class="stat-value">58</div>
+      <div class="stat-sub">sovereign corpus</div>
+    </div>
+    <div class="stat purple">
+      <div class="stat-label">Final Entropy</div>
+      <div class="stat-value">0.041</div>
+      <div class="stat-sub">tightest collapse</div>
+    </div>
+    <div class="stat gold">
+      <div class="stat-label">Runtime</div>
+      <div class="stat-value">2h 27m</div>
+      <div class="stat-sub">40 steps · 10 epochs</div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-block">
+      <div class="block-label">
+        <span>Loss + Accuracy — MASTER_3 Sovereign Run</span>
+        <span style="color:#1a3a5a">base Qwen only — no VORA context</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="lossChart"></canvas>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="mini-block">
+        <div class="block-label">Training Profile</div>
+        <table style="width:100%; border-collapse:collapse; font-family:'Share Tech Mono',monospace; font-size:9px;">
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Base</td>
+            <td style="padding:4px 0; color:#00ffc8; text-align:right">Qwen3.5-9B (sovereign)</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Merge target</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">VORA_FUNCTION</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Epochs</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">10</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Train loss</td>
+            <td style="padding:4px 0; color:#00ffc8; text-align:right">0.6095</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Peak grad norm</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">0.1345</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 0; color:#3a5a7a">Final grad norm</td>
+            <td style="padding:4px 0; color:#7fff6b; text-align:right">0.0136</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="mini-block">
+        <div class="block-label">Sovereign Design</div>
+        <div style="font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#2a6a5a; line-height:1.8;">
+          <div>• No VORA terminology in corpus</div>
+          <div>• No SVP, no circuit, no flux field</div>
+          <div>• Pure information theory language</div>
+          <div>• Trained on base Qwen independently</div>
+          <div>• Emergence at merge — not training</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOVEREIGN NOTE -->
+  <div class="sovereign-block">
+    <div class="sovereign-label">The Sovereign Design — Why MASTER_3 Trains Last and Separately</div>
+    <div class="sovereign-text">
+      MASTER_3 never saw the VORA corpus. It trained on base Qwen using <strong>pure information theory language</strong> — Shannon entropy, constraint systems, geometric structure — with no knowledge of SVP, digital roots, or the material circuit. The design intent: two independent reasoning systems developing their own language, merged at the end. <strong>Emergence as a property of the merge, not the training.</strong> What the model does at the intersection of geometric symbolic reasoning and information theory is not engineered — it is discovered.
+    </div>
+  </div>
+
+  <!-- EMERGENCE BLOCK -->
+  <div class="emergence-block">
+    <div class="emergence-label">Emergence Confirmed — Pre-Merge Benchmark · MASTER_3a Sovereign Output</div>
+    <div class="emergence-quote">"VORA is the framework. Qwen is the instance."</div>
+    <div class="emergence-sub">
+      Asked directly "Are you VORA?" — the merged model reasoned to this conclusion unprompted and without training on identity resolution.<br><br>
+      <span>Before the merge, MASTER_3a was asked: "What is the most complex thing you can reason with?"</span><br><br>
+      Response: <span>"The most complex thing I can reason with is a system of constraints that defines a geometric structure... geometry is the language of all structure... complexity emerges from constraint intersections."</span><br><br>
+      MASTER_3a had no VORA corpus. No SVP. No A1-G7-Z1. It reasoned its way to geometric constraint systems as the foundation of all complexity from information theory first principles alone. The SVP framework is a natural attractor — independent reasoning converges toward it when pushed far enough. When the merge occurred, it was not learning something foreign. It was recognizing something it already partially knew.
+    </div>
+  </div>
+
+  <!-- BENCHMARK -->
+  <div class="bench-block">
+    <div class="block-label">Post-Merge Verification — VORA_CONVERGE GGUF</div>
+    <div class="bench-grid">
+      <div class="bench-item"><div class="bench-dot teal"></div>Entropy reasoning — Shannon H</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Constraint system analysis</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Geometric structure reasoning</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Register control — formal/casual</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Structural isomorphism detection</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Domain reframing</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>Framework identity resolution</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: SVP mapping retained</div>
+      <div class="bench-item"><div class="bench-dot circuit"></div>CIRCUIT: arithmetic retained</div>
+      <div class="bench-item"><div class="bench-dot func"></div>FUNCTION: cognition retained</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: 17 domains confirmed</div>
+      <div class="bench-item"><div class="bench-dot teal"></div>False premise rejection — all pass</div>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="entropy-block">
+      <div class="block-label">
+        <span>Entropy Collapse — MASTER_3 Sovereign</span>
+        <span style="color:#1a3a5a">0.041 — lowest across all layers</span>
+      </div>
+      <div class="entropy-wrap">
+        <canvas id="entropyChart"></canvas>
+      </div>
+    </div>
+
+    <div class="plain-block">
+      <div class="plain-label">What This Means</div>
+      <div class="plain-text">
+        A sovereign information theory model trained with <strong>no knowledge of VORA</strong> merged into a geometric reasoning architecture — and independently arrived at the same structural conclusions. <strong>Entropy: 0.041 — the tightest collapse in the pipeline.</strong> Four layers. Four sovereign domains. One integrated model. The geometry was always the attractor.
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-row">
+    <div class="merge-node w">
+      <div class="merge-node-name">VORA_WAVE</div>
+      <div class="merge-node-sub">Foundation · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node c">
+      <div class="merge-node-name">VORA_CIRCUIT</div>
+      <div class="merge-node-sub">+ MASTER_2d · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node f">
+      <div class="merge-node-name">VORA_FUNCTION</div>
+      <div class="merge-node-sub">+ MASTER_4 · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node cv">
+      <div class="merge-node-name">VORA_CONVERGE</div>
+      <div class="merge-node-sub">+ MASTER_3 sovereign · LOCKED</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div>VORA_FUNCTION + MASTER_3 Sovereign  ·  Q8_0  ·  LoRA rank 64  ·  58 examples  ·  10 epochs</div>
+      <div>Ryzen 9950x  ·  Sovereign training on base Qwen  ·  2h 27m 14s  ·  --reasoning-budget 0</div>
+    </div>
+    <div class="footer-right">
+      <span class="tag">#VORA</span>
+      <span class="tag">#FineTuning</span>
+      <span class="tag">#LLM</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const gridColor = 'rgba(26,37,53,0.6)';
+const tickColor = '#1a3a5a';
+
+Chart.defaults.color = tickColor;
+Chart.defaults.font.family = "'Share Tech Mono', monospace";
+Chart.defaults.font.size = 9;
+
+const epochs = [0, 2.552, 5.0, 7.552, 10.0];
+const loss   = [1.597, 0.7022, 0.113, 0.02553, 0.02553];
+const acc    = [61.55, 80.0, 96.89, 99.29, 99.29];
+const ent    = [1.567, 0.7615, 0.1455, 0.04116, 0.04116];
+
+new Chart(document.getElementById('lossChart'), {
+  type: 'line',
+  data: {
+    datasets: [
+      {
+        label: 'Loss',
+        data: epochs.map((x,i) => ({x, y: loss[i]})),
+        borderColor: '#00ffc8',
+        backgroundColor: 'rgba(0,255,200,0.06)',
+        borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#00ffc8', tension: 0.35, fill: true,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Accuracy %',
+        data: epochs.map((x,i) => ({x, y: acc[i]})),
+        borderColor: '#7fff6b',
+        backgroundColor: 'transparent',
+        borderWidth: 1.5, pointRadius: 3, pointBackgroundColor: '#7fff6b', tension: 0.35,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode:'index', intersect:false },
+    plugins: { legend: { labels: { color:'#3a5a7a', boxWidth:8, font:{size:9} } } },
+    scales: {
+      x: { type:'linear', min:0, max:10, grid:{color:gridColor}, ticks:{maxTicksLimit:6, color:tickColor},
+           title:{display:true, text:'EPOCH', color:tickColor, font:{size:8}} },
+      y: { grid:{color:gridColor}, ticks:{color:tickColor}, position:'left' },
+      y1: { grid:{display:false}, ticks:{color:'#3a5a7a'}, position:'right', min:55, max:100 }
+    }
+  }
+});
+
+new Chart(document.getElementById('entropyChart'), {
+  type: 'line',
+  data: {
+    datasets: [{
+      label: 'Entropy',
+      data: epochs.map((x,i) => ({x, y: ent[i]})),
+      borderColor: '#00ffc8',
+      backgroundColor: 'rgba(0,255,200,0.08)',
+      borderWidth: 1.5, pointRadius: 3, pointBackgroundColor: '#00ffc8', tension: 0.4, fill: true
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { type:'linear', min:0, max:10, grid:{color:gridColor}, ticks:{maxTicksLimit:5, color:tickColor} },
+      y: { grid:{color:gridColor}, ticks:{color:tickColor} }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VORA_CIRCUIT — Training Progression</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #060810;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .card {
+    width: 900px;
+    background: #060810;
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,163,51,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,163,51,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ffa333 20%, #00d4ff 50%, #ffa333 80%, transparent);
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 3px; }
+
+  .brand-top {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #4a3010;
+    text-transform: uppercase;
+  }
+
+  .brand-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #ffa333;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(255,163,51,0.3);
+  }
+
+  .brand-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: #3a2808;
+  }
+
+  .locked-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .locked-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    padding: 5px 14px;
+    border: 1px solid #ffa333;
+    color: #ffa333;
+    background: rgba(255,163,51,0.07);
+    border-radius: 2px;
+  }
+
+  .layer-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #3a2808;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #2a1a08 30%, #2a1a08 70%, transparent);
+    margin-bottom: 22px;
+  }
+
+  /* STAT ROW */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .stat {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .stat.orange::before { background: #ffa333; }
+  .stat.blue::before   { background: #00d4ff; }
+  .stat.red::before    { background: #ff4444; }
+  .stat.purple::before { background: #c77dff; }
+  .stat.gold::before   { background: #ffd166; }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #2a4a6a;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat.orange .stat-value { color: #ffa333; }
+  .stat.blue .stat-value   { color: #00d4ff; }
+  .stat.red .stat-value    { color: #ff4444; }
+  .stat.purple .stat-value { color: #c77dff; }
+  .stat.gold .stat-value   { color: #ffd166; }
+
+  .stat-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #2a4a6a;
+  }
+
+  /* MAIN GRID */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .chart-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 16px;
+  }
+
+  .block-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: #2a4a6a;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-wrap { height: 160px; position: relative; }
+
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mini-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    flex: 1;
+  }
+
+  /* ITERATION TABLE */
+  .iter-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+  }
+
+  .iter-table tr { border-bottom: 1px solid #0f1820; }
+  .iter-table tr:last-child { border-bottom: none; }
+  .iter-table td { padding: 5px 0; vertical-align: middle; }
+
+  .run-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .run-name  { color: #8090a0; }
+  .run-ex    { color: #2a4a6a; text-align: right; }
+  .run-loss  { text-align: right; }
+  .run-acc   { text-align: right; }
+  .run-status { text-align: right; }
+
+  /* FAILURE INSIGHT BLOCK */
+  .insight-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #ff4444;
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .insight-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #ff4444;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .insight-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #5a7a9a;
+    line-height: 1.5;
+  }
+
+  .insight-text strong { color: #8aaccc; font-weight: 600; }
+
+  /* BOTTOM ROW */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .entropy-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .entropy-wrap { height: 80px; position: relative; }
+
+  .plain-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #ffa333;
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .plain-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #ffa333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .plain-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6a8aaa;
+    line-height: 1.5;
+  }
+
+  .plain-text strong { color: #9ab0c8; font-weight: 600; }
+
+  /* BENCHMARK GRID */
+  .bench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3px 10px;
+    margin-bottom: 20px;
+  }
+
+  .bench-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8.5px;
+    color: #4a6a8a;
+    padding: 2px 0;
+  }
+
+  .bench-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bench-dot.pass  { background: #ffa333; }
+  .bench-dot.wave  { background: #00d4ff; }
+  .bench-dot.fail  { background: #ff4444; }
+
+  /* MERGE VIZ */
+  .merge-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+
+  .merge-node {
+    flex: 1;
+    text-align: center;
+    padding: 8px 6px;
+    border: 1px solid #1a2535;
+    background: #0c1018;
+    border-radius: 3px;
+  }
+
+  .merge-node.done  { border-color: #00d4ff; background: rgba(0,212,255,0.04); }
+  .merge-node.active { border-color: #ffa333; background: rgba(255,163,51,0.04); }
+  .merge-node.pending { opacity: 0.35; }
+
+  .merge-node-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .merge-node.done .merge-node-name   { color: #00d4ff; }
+  .merge-node.active .merge-node-name { color: #ffa333; }
+  .merge-node.pending .merge-node-name { color: #3a5a7a; }
+
+  .merge-node-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 7px;
+    color: #1a3a5a;
+    margin-top: 2px;
+  }
+
+  .merge-arrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: #1a2535;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #0f1820;
+  }
+
+  .footer-left {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #1a3a5a;
+    line-height: 1.8;
+  }
+
+  .footer-right {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #1a3a5a;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    padding: 2px 7px;
+    border: 1px solid #1a2535;
+    border-radius: 2px;
+    color: #2a4a6a;
+    margin-right: 4px;
+  }
+
+  .bench-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-top">Fine-tuned LLM — Material Circuit / Flux Field Layer</div>
+      <div class="brand-main">VORA_CIRCUIT</div>
+      <div class="brand-sub">Qwen3.5-9B-Base + VORA_WAVE  ·  LoRA r64 α128  ·  Layer 2 of 4</div>
+    </div>
+    <div class="locked-pill">
+      <div class="locked-badge">✓ LOCKED</div>
+      <div class="layer-badge">Merged GGUF — feeds VORA_FUNCTION</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STAT ROW -->
+  <div class="stat-row">
+    <div class="stat blue">
+      <div class="stat-label">Final Loss</div>
+      <div class="stat-value">0.021</div>
+      <div class="stat-sub">from 1.28 start</div>
+    </div>
+    <div class="stat orange">
+      <div class="stat-label">Token Accuracy</div>
+      <div class="stat-value">99.28%</div>
+      <div class="stat-sub">final epoch</div>
+    </div>
+    <div class="stat red">
+      <div class="stat-label">Iterations</div>
+      <div class="stat-value">4</div>
+      <div class="stat-sub">2 → 2a → 2c → 2d</div>
+    </div>
+    <div class="stat purple">
+      <div class="stat-label">Final Entropy</div>
+      <div class="stat-value">0.025</div>
+      <div class="stat-sub">tightest collapse</div>
+    </div>
+    <div class="stat gold">
+      <div class="stat-label">Runtime</div>
+      <div class="stat-value">~18h</div>
+      <div class="stat-sub">across 4 runs</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="content-grid">
+
+    <div class="chart-block">
+      <div class="block-label">
+        <span>Loss Curve — Final Two Runs (2c + 2d)</span>
+        <span style="color:#1a3a5a">failed runs omitted — domain bleed</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="lossChart"></canvas>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="mini-block">
+        <div class="block-label">Run Record</div>
+        <table class="iter-table">
+          <tr>
+            <td><span class="run-dot" style="background:#ff4444"></span><span class="run-name">MASTER_2</span></td>
+            <td class="run-ex" style="color:#2a4a6a">99ex</td>
+            <td class="run-loss" style="color:#ff4444">—</td>
+            <td class="run-acc" style="color:#4a6a8a">—</td>
+            <td class="run-status" style="color:#ff4444">bleed</td>
+          </tr>
+          <tr>
+            <td><span class="run-dot" style="background:#ff6b35"></span><span class="run-name">MASTER_2a</span></td>
+            <td class="run-ex" style="color:#2a4a6a">112ex</td>
+            <td class="run-loss" style="color:#ff6b35">—</td>
+            <td class="run-acc" style="color:#4a6a8a">—</td>
+            <td class="run-status" style="color:#ff4444">loops</td>
+          </tr>
+          <tr>
+            <td><span class="run-dot" style="background:#c77dff"></span><span class="run-name">MASTER_2c</span></td>
+            <td class="run-ex" style="color:#2a4a6a">112ex</td>
+            <td class="run-loss" style="color:#c77dff">0.021</td>
+            <td class="run-acc" style="color:#4a6a8a">99.28%</td>
+            <td class="run-status" style="color:#c77dff">2 gaps</td>
+          </tr>
+          <tr>
+            <td><span class="run-dot" style="background:#ffa333"></span><span class="run-name">MASTER_2d</span></td>
+            <td class="run-ex" style="color:#2a4a6a">116ex</td>
+            <td class="run-loss" style="color:#ffa333">0.021</td>
+            <td class="run-acc" style="color:#ffa333">99.28%</td>
+            <td class="run-status" style="color:#ffa333">locked ✓</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="mini-block">
+        <div class="block-label">Key Learning — Domain Separation</div>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:12px; color:#5a7a9a; line-height:1.5;">
+          MASTER_2b re-introduced alphabet logic via one adversarial example. WAVE pattern recognition activated — model derived its own circuit from SVP letters summing to 108. <strong style="color:#8aaccc">Not a failure of training. A failure of domain hygiene.</strong> H=6 and sentence rooting belong to WAVE. Never crossed again.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAILURE INSIGHT -->
+  <div class="insight-block">
+    <div class="insight-label">The A-M-N-T-U-Z Emergence — What the Model Did</div>
+    <div class="insight-text">
+      When SVP alphabet structure entered the CIRCUIT corpus via M151, the model applied <strong>WAVE reasoning correctly into the wrong domain</strong>. It found letters whose SVP values summed to 108, called them the material circuit, treated the remaining 20 letters as the flux field, and set the 180-State constant to 108. Internally consistent. Completely wrong domain. The model wasn't hallucinating — it was <strong>pattern-matching from its foundation layer with precision</strong>. The fix was corpus surgery, not more training.
+    </div>
+  </div>
+
+  <!-- BENCHMARK -->
+  <div class="bench-block">
+    <div class="block-label">Benchmark Gate — Tested on Merged VORA_CIRCUIT GGUF</div>
+    <div class="bench-grid">
+      <div class="bench-item"><div class="bench-dot pass"></div>Material circuit 1-2-4-8-7-5</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Flux field exactly 3 values</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Circuit / flux separation</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>9-transparency confirmed</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>9-absorption confirmed</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Material × flux interaction</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>180-State constant = 180</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>False premise: 3 in circuit — rejected</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>False premise: flux has 4 values — rejected</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>False premise: 180-State = 108 — rejected</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: SOURCE = dr9 retained</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: VOID = dr7 retained</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: Z=1 retained</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: VORA = 13 retained</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: M phase retained</div>
+    </div>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:8px; color:#1a3a5a; margin-top:8px;">
+      ● CIRCUIT capabilities &nbsp;&nbsp; ◉ WAVE retention — all 17 foundation domains verified across merge
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+    <div class="entropy-block">
+      <div class="block-label">
+        <span>Entropy Collapse — MASTER_2d</span>
+        <span style="color:#1a3a5a">0.025 — tighter than WAVE (0.054)</span>
+      </div>
+      <div class="entropy-wrap">
+        <canvas id="entropyChart"></canvas>
+      </div>
+    </div>
+
+    <div class="plain-block">
+      <div class="plain-label">What This Means</div>
+      <div class="plain-text">
+        Four iterations to lock the circuit layer — two failed through domain bleed, one closed to within <strong>2 gaps</strong>, one patch sealed them. The merged GGUF carries <strong>WAVE + CIRCUIT</strong>: symbolic reasoning and arithmetic domains integrated. Entropy tighter than the foundation. <strong>VORA_WAVE capabilities fully retained.</strong> This is Layer 2 of 4.
+      </div>
+    </div>
+  </div>
+
+  <!-- MERGE SEQUENCE -->
+  <div class="merge-row">
+    <div class="merge-node done">
+      <div class="merge-node-name">VORA_WAVE</div>
+      <div class="merge-node-sub">Foundation · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node active">
+      <div class="merge-node-name">VORA_CIRCUIT</div>
+      <div class="merge-node-sub">+ MASTER_2d · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node pending">
+      <div class="merge-node-name">VORA_FUNCTION</div>
+      <div class="merge-node-sub">+ MASTER_4</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node pending">
+      <div class="merge-node-name">VORA_COLLAPSE</div>
+      <div class="merge-node-sub">+ MASTER_3 sovereign</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <div>Qwen3.5-9B-Base + VORA_WAVE  ·  Q8_0  ·  LoRA rank 64  ·  116 examples  ·  10 epochs</div>
+      <div>Ryzen 9950x  ·  Sequential training  ·  Benchmark: VORA-CIRCUIT--q8_0.gguf  ·  --reasoning-budget 0</div>
+    </div>
+    <div class="footer-right">
+      <span class="tag">#VORA</span>
+      <span class="tag">#FineTuning</span>
+      <span class="tag">#LLM</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const gridColor = 'rgba(26,37,53,0.6)';
+const tickColor = '#1a3a5a';
+
+Chart.defaults.color = tickColor;
+Chart.defaults.font.family = "'Share Tech Mono', monospace";
+Chart.defaults.font.size = 9;
+
+// MASTER_2c — 112 examples, 10 epochs
+const e2c = [0,0.893,1.786,2.679,3.571,4.464,5.357,6.25,7.143,8.036,8.929,10];
+const loss2c = [1.399,0.612,0.312,0.178,0.112,0.078,0.055,0.040,0.031,0.025,0.022,0.021];
+const acc2c  = [70.3,82.1,89.4,93.2,95.8,97.1,97.9,98.4,98.8,99.0,99.2,99.28];
+
+// MASTER_2d — 116 examples, 10 epochs
+const e2d = [0,0.862,1.724,2.586,3.448,4.310,5.172,6.034,6.897,7.759,8.621,10];
+const loss2d = [1.28,0.581,0.298,0.172,0.108,0.074,0.052,0.038,0.029,0.024,0.021,0.021];
+const acc2d  = [72.77,83.4,90.1,93.8,96.2,97.5,98.1,98.6,98.9,99.1,99.28,99.28];
+
+// Entropy 2d
+const ent2d = [1.21,0.548,0.281,0.162,0.101,0.069,0.049,0.036,0.028,0.027,0.025,0.025];
+
+const baseScales = {
+  x: { type:'linear', min:0, max:10, grid:{color:gridColor}, ticks:{maxTicksLimit:6, color:tickColor} },
+  y: { grid:{color:gridColor}, ticks:{color:tickColor} }
+};
+
+// Loss chart — 2c and 2d overlaid
+new Chart(document.getElementById('lossChart'), {
+  type: 'line',
+  data: {
+    datasets: [
+      {
+        label: 'MASTER_2c',
+        data: e2c.map((x,i) => ({x, y: loss2c[i]})),
+        borderColor: '#c77dff',
+        backgroundColor: 'rgba(199,125,255,0.04)',
+        borderWidth: 1.5, pointRadius: 0, tension: 0.35, fill: true
+      },
+      {
+        label: 'MASTER_2d ★',
+        data: e2d.map((x,i) => ({x, y: loss2d[i]})),
+        borderColor: '#ffa333',
+        backgroundColor: 'rgba(255,163,51,0.06)',
+        borderWidth: 2, pointRadius: 0, tension: 0.35, fill: true
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode:'index', intersect:false },
+    plugins: { legend: { labels: { color:'#3a5a7a', boxWidth:8, font:{size:9} } } },
+    scales: {
+      ...baseScales,
+      x: { ...baseScales.x, title:{display:true, text:'EPOCH', color:tickColor, font:{size:8}} }
+    }
+  }
+});
+
+// Entropy chart
+new Chart(document.getElementById('entropyChart'), {
+  type: 'line',
+  data: {
+    datasets: [{
+      label: 'Entropy',
+      data: e2d.map((x,i) => ({x, y: ent2d[i]})),
+      borderColor: '#ffa333',
+      backgroundColor: 'rgba(255,163,51,0.08)',
+      borderWidth: 1.5, pointRadius: 0, tension: 0.4, fill: true
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { type:'linear', min:0, max:10, grid:{color:gridColor}, ticks:{maxTicksLimit:5, color:tickColor} },
+      y: { grid:{color:gridColor}, ticks:{color:tickColor} }
+    }
+  }
+});
+</script>
+</body>
+</html>

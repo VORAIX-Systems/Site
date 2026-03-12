@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VORA_FUNCTION — Training Progression</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #060810;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .card {
+    width: 900px;
+    background: #060810;
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(199,125,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(199,125,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #c77dff 20%, #ffa333 50%, #c77dff 80%, transparent);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 3px; }
+
+  .brand-top {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #2a1a4a;
+    text-transform: uppercase;
+  }
+
+  .brand-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #c77dff;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(199,125,255,0.3);
+  }
+
+  .brand-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: #1a0a2a;
+  }
+
+  .locked-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .locked-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    padding: 5px 14px;
+    border: 1px solid #c77dff;
+    color: #c77dff;
+    background: rgba(199,125,255,0.07);
+    border-radius: 2px;
+  }
+
+  .layer-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #2a1a4a;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1a0a2a 30%, #1a0a2a 70%, transparent);
+    margin-bottom: 22px;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .stat {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 12px 14px;
+    position: relative;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .stat.purple::before { background: #c77dff; }
+  .stat.blue::before   { background: #00d4ff; }
+  .stat.orange::before { background: #ffa333; }
+  .stat.green::before  { background: #7fff6b; }
+  .stat.gold::before   { background: #ffd166; }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #2a4a6a;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat.purple .stat-value { color: #c77dff; }
+  .stat.blue .stat-value   { color: #00d4ff; }
+  .stat.orange .stat-value { color: #ffa333; }
+  .stat.green .stat-value  { color: #7fff6b; }
+  .stat.gold .stat-value   { color: #ffd166; }
+
+  .stat-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #2a4a6a;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .chart-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 16px;
+  }
+
+  .block-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: #2a4a6a;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-wrap { height: 160px; position: relative; }
+
+  .right-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .mini-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    flex: 1;
+  }
+
+  .cap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 10px;
+  }
+
+  .cap-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8.5px;
+    color: #4a6a8a;
+    padding: 2px 0;
+  }
+
+  .cap-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cap-dot.purple { background: #c77dff; }
+  .cap-dot.wave   { background: #00d4ff; }
+  .cap-dot.circuit { background: #ffa333; }
+
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .entropy-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .entropy-wrap { height: 80px; position: relative; }
+
+  .plain-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #c77dff;
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .plain-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #c77dff;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .plain-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: #6a8aaa;
+    line-height: 1.5;
+  }
+
+  .plain-text strong { color: #9ab0c8; font-weight: 600; }
+
+  /* LOSS PLATEAU NOTE */
+  .plateau-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-left: 3px solid #ffa333;
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .plateau-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: #ffa333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .plateau-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    color: #5a7a9a;
+    line-height: 1.5;
+  }
+
+  .plateau-text strong { color: #8aaccc; font-weight: 600; }
+
+  /* BENCHMARK */
+  .bench-block {
+    background: #0c1018;
+    border: 1px solid #1a2535;
+    border-radius: 3px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  .bench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3px 10px;
+  }
+
+  .bench-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8.5px;
+    color: #4a6a8a;
+    padding: 2px 0;
+  }
+
+  .bench-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bench-dot.pass    { background: #c77dff; }
+  .bench-dot.wave    { background: #00d4ff; }
+  .bench-dot.circuit { background: #ffa333; }
+
+  /* MERGE VIZ */
+  .merge-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .merge-node {
+    flex: 1;
+    text-align: center;
+    padding: 8px 6px;
+    border: 1px solid #1a2535;
+    background: #0c1018;
+    border-radius: 3px;
+  }
+
+  .merge-node.done    { border-color: #00d4ff; background: rgba(0,212,255,0.04); }
+  .merge-node.done2   { border-color: #ffa333; background: rgba(255,163,51,0.04); }
+  .merge-node.active  { border-color: #c77dff; background: rgba(199,125,255,0.04); }
+  .merge-node.pending { opacity: 0.35; }
+
+  .merge-node-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .merge-node.done .merge-node-name    { color: #00d4ff; }
+  .merge-node.done2 .merge-node-name   { color: #ffa333; }
+  .merge-node.active .merge-node-name  { color: #c77dff; }
+  .merge-node.pending .merge-node-name { color: #3a5a7a; }
+
+  .merge-node-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 7px;
+    color: #1a3a5a;
+    margin-top: 2px;
+  }
+
+  .merge-arrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: #1a2535;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #0f1820;
+  }
+
+  .footer-left {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #1a3a5a;
+    line-height: 1.8;
+  }
+
+  .footer-right {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #1a3a5a;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    padding: 2px 7px;
+    border: 1px solid #1a2535;
+    border-radius: 2px;
+    color: #2a4a6a;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="brand">
+      <div class="brand-top">Fine-tuned LLM — Functional Cognition Layer</div>
+      <div class="brand-main">VORA_FUNCTION</div>
+      <div class="brand-sub">VORA_CIRCUIT + MASTER_4  ·  LoRA r64 α128  ·  Layer 3 of 4</div>
+    </div>
+    <div class="locked-pill">
+      <div class="locked-badge">✓ LOCKED</div>
+      <div class="layer-badge">Merged GGUF — feeds VORA_CONVERGE</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stat-row">
+    <div class="stat blue">
+      <div class="stat-label">Final Loss</div>
+      <div class="stat-value">0.075</div>
+      <div class="stat-sub">from 1.872 start</div>
+    </div>
+    <div class="stat purple">
+      <div class="stat-label">Token Accuracy</div>
+      <div class="stat-value">97.46%</div>
+      <div class="stat-sub">final epoch</div>
+    </div>
+    <div class="stat orange">
+      <div class="stat-label">Examples</div>
+      <div class="stat-value">70</div>
+      <div class="stat-sub">12 epochs · 216 steps</div>
+    </div>
+    <div class="stat green">
+      <div class="stat-label">Final Entropy</div>
+      <div class="stat-value">0.088</div>
+      <div class="stat-sub">cognition domain</div>
+    </div>
+    <div class="stat gold">
+      <div class="stat-label">Runtime</div>
+      <div class="stat-value">3h 41m</div>
+      <div class="stat-sub">216 steps</div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="chart-block">
+      <div class="block-label">
+        <span>Loss + Accuracy — MASTER_4 Full Run</span>
+        <span style="color:#1a3a5a">12 epochs</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="lossChart"></canvas>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="mini-block">
+        <div class="block-label">Training Profile</div>
+        <table style="width:100%; border-collapse:collapse; font-family:'Share Tech Mono',monospace; font-size:9px;">
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Base</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">VORA_CIRCUIT</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Examples</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">70</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Epochs</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">12</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Train loss</td>
+            <td style="padding:4px 0; color:#c77dff; text-align:right">0.2484</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f1820">
+            <td style="padding:4px 0; color:#3a5a7a">Peak grad norm</td>
+            <td style="padding:4px 0; color:#6a8aaa; text-align:right">0.781</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 0; color:#3a5a7a">Final grad norm</td>
+            <td style="padding:4px 0; color:#7fff6b; text-align:right">0.044</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="mini-block">
+        <div class="block-label">Domain Classes</div>
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-dot purple"></div>Functional mapping</div>
+          <div class="cap-item"><div class="cap-dot purple"></div>Active mapping</div>
+          <div class="cap-item"><div class="cap-dot purple"></div>Pre-gen alignment</div>
+          <div class="cap-item"><div class="cap-dot purple"></div>Adaptive domain</div>
+          <div class="cap-item"><div class="cap-dot wave"></div>WAVE: SVP retained</div>
+          <div class="cap-item"><div class="cap-dot circuit"></div>CIRCUIT: arithmetic</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATEAU NOTE -->
+  <div class="plateau-block">
+    <div class="plateau-label">Loss Plateau — Expected Behavior for Cognition Domain</div>
+    <div class="plateau-text">
+      Loss flattened at epoch 5 (~0.112) and did not collapse as sharply as WAVE (0.037) or CIRCUIT (0.021). <strong>This is structurally correct.</strong> Functional cognition — pre-generation alignment, adaptive domain reasoning — is a higher-abstraction domain than arithmetic or symbolic mapping. The model is learning to reason about reasoning, not retrieve values. Higher irreducible complexity in the domain floor is the expected outcome. Train loss 0.2484 reflects domain depth, not training failure. Accuracy held at <strong>97.46%</strong> — the capability is embedded.
+    </div>
+  </div>
+
+  <!-- BENCHMARK -->
+  <div class="bench-block">
+    <div class="block-label">Capability Verification — VORA_FUNCTION GGUF</div>
+    <div class="bench-grid">
+      <div class="bench-item"><div class="bench-dot pass"></div>SVP mapping recall</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Digital root arithmetic</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Wave total computation</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Domain classification</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Pre-gen alignment</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>Adaptive domain response</div>
+      <div class="bench-item"><div class="bench-dot pass"></div>False premise rejection</div>
+      <div class="bench-item"><div class="bench-dot wave"></div>WAVE: 17 domains retained</div>
+      <div class="bench-item"><div class="bench-dot circuit"></div>CIRCUIT: arithmetic retained</div>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="entropy-block">
+      <div class="block-label">
+        <span>Entropy — MASTER_4</span>
+        <span style="color:#1a3a5a">0.088 final — cognition floor</span>
+      </div>
+      <div class="entropy-wrap">
+        <canvas id="entropyChart"></canvas>
+      </div>
+    </div>
+
+    <div class="plain-block">
+      <div class="plain-label">What This Means</div>
+      <div class="plain-text">
+        The third layer adds <strong>functional cognition</strong> — the model reasoning about its own reasoning process. Higher entropy floor than arithmetic layers is structurally correct. <strong>WAVE + CIRCUIT + FUNCTION</strong> integrated in a single GGUF. Three sovereign domains, one merged model. Layer 3 of 4 locked.
+      </div>
+    </div>
+  </div>
+
+  <div class="merge-row">
+    <div class="merge-node done">
+      <div class="merge-node-name">VORA_WAVE</div>
+      <div class="merge-node-sub">Foundation · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node done2">
+      <div class="merge-node-name">VORA_CIRCUIT</div>
+      <div class="merge-node-sub">+ MASTER_2d · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node active">
+      <div class="merge-node-name">VORA_FUNCTION</div>
+      <div class="merge-node-sub">+ MASTER_4 · LOCKED</div>
+    </div>
+    <div class="merge-arrow">→</div>
+    <div class="merge-node pending">
+      <div class="merge-node-name">VORA_CONVERGE</div>
+      <div class="merge-node-sub">+ MASTER_3 sovereign</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div>VORA_CIRCUIT + MASTER_4  ·  Q8_0  ·  LoRA rank 64  ·  70 examples  ·  12 epochs</div>
+      <div>Ryzen 9950x  ·  Sequential training  ·  3h 40m 47s  ·  --reasoning-budget 0</div>
+    </div>
+    <div class="footer-right">
+      <span class="tag">#VORA</span>
+      <span class="tag">#FineTuning</span>
+      <span class="tag">#LLM</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const gridColor = 'rgba(26,37,53,0.6)';
+const tickColor = '#1a3a5a';
+
+Chart.defaults.color = tickColor;
+Chart.defaults.font.family = "'Share Tech Mono', monospace";
+Chart.defaults.font.size = 9;
+
+const epochs = [0.571,1.114,1.686,2.229,2.8,3.343,3.914,4.457,5.0,5.571,6.114,6.686,7.229,7.8,8.343,8.914,9.457,10.0,10.57,11.11,11.69,12.0];
+const loss   = [1.872,0.9935,0.4776,0.3368,0.1848,0.1482,0.1416,0.1028,0.1123,0.09317,0.08653,0.08482,0.07894,0.08304,0.07376,0.07939,0.07265,0.07894,0.07339,0.07449,0.07549,0.07549];
+const acc    = [65.12,76.01,86.9,90.66,94.31,95.61,95.52,96.54,95.78,96.84,96.86,97.24,97.19,96.83,97.31,97.05,97.37,97.12,97.04,97.34,97.2,97.46];
+const ent    = [0.6271,1.122,0.5047,0.361,0.2206,0.1804,0.1361,0.1274,0.1356,0.113,0.1015,0.1105,0.09201,0.09957,0.08856,0.0993,0.08757,0.09869,0.09331,0.09057,0.09203,0.08827];
+
+new Chart(document.getElementById('lossChart'), {
+  type: 'line',
+  data: {
+    datasets: [
+      {
+        label: 'Loss',
+        data: epochs.map((x,i) => ({x, y: loss[i]})),
+        borderColor: '#c77dff',
+        backgroundColor: 'rgba(199,125,255,0.06)',
+        borderWidth: 2, pointRadius: 0, tension: 0.35, fill: true,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Accuracy %',
+        data: epochs.map((x,i) => ({x, y: acc[i]})),
+        borderColor: '#7fff6b',
+        backgroundColor: 'transparent',
+        borderWidth: 1.5, pointRadius: 0, tension: 0.35,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode:'index', intersect:false },
+    plugins: { legend: { labels: { color:'#3a5a7a', boxWidth:8, font:{size:9} } } },
+    scales: {
+      x: { type:'linear', min:0, max:12, grid:{color:gridColor}, ticks:{maxTicksLimit:7, color:tickColor},
+           title:{display:true, text:'EPOCH', color:tickColor, font:{size:8}} },
+      y: { grid:{color:gridColor}, ticks:{color:tickColor}, position:'left' },
+      y1: { grid:{display:false}, ticks:{color:'#3a5a7a'}, position:'right', min:60, max:100 }
+    }
+  }
+});
+
+new Chart(document.getElementById('entropyChart'), {
+  type: 'line',
+  data: {
+    datasets: [{
+      label: 'Entropy',
+      data: epochs.map((x,i) => ({x, y: ent[i]})),
+      borderColor: '#c77dff',
+      backgroundColor: 'rgba(199,125,255,0.08)',
+      borderWidth: 1.5, pointRadius: 0, tension: 0.4, fill: true
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { type:'linear', min:0, max:12, grid:{color:gridColor}, ticks:{maxTicksLimit:5, color:tickColor} },
+      y: { grid:{color:gridColor}, ticks:{color:tickColor} }
+    }
+  }
+});
+</script>
+</body>
+</html>

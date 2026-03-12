@@ -259,6 +259,252 @@
             margin: 0 auto;
         }
 
+        /* ============================================================
+           VORA PIPELINE SECTION
+           ============================================================ */
+
+        .vora-section {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .vora-section-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.5rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .vora-section-title {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.4rem;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .vora-section-sub {
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-align: center;
+            letter-spacing: 0.15rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        /* Pipeline flow indicator */
+        .pipeline-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            font-size: 0.7rem;
+            letter-spacing: 0.15rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .flow-node.locked {
+            color: var(--electric);
+            border-color: rgba(0, 255, 255, 0.4);
+        }
+
+        .flow-arrow {
+            font-size: 0.8rem;
+            color: rgba(0, 255, 255, 0.2);
+            padding: 0 0.5rem;
+        }
+
+        /* Layer button grid */
+        .layer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .layer-btn {
+            display: block;
+            text-decoration: none;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            background: rgba(10, 10, 10, 0.6);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .layer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            transition: opacity 0.3s;
+        }
+
+        .layer-btn.wave::before   { background: #00d4ff; }
+        .layer-btn.circuit::before { background: #ffa333; }
+        .layer-btn.function::before { background: #c77dff; }
+        .layer-btn.converge::before { background: #00ffc8; }
+
+        .layer-btn:hover {
+            background: rgba(20, 20, 20, 0.9);
+        }
+
+        .layer-btn.wave:hover     { border-color: rgba(0, 212, 255, 0.4); box-shadow: 0 0 20px rgba(0, 212, 255, 0.08); }
+        .layer-btn.circuit:hover  { border-color: rgba(255, 163, 51, 0.4); box-shadow: 0 0 20px rgba(255, 163, 51, 0.08); }
+        .layer-btn.function:hover { border-color: rgba(199, 125, 255, 0.4); box-shadow: 0 0 20px rgba(199, 125, 255, 0.08); }
+        .layer-btn.converge:hover { border-color: rgba(0, 255, 200, 0.4); box-shadow: 0 0 20px rgba(0, 255, 200, 0.08); }
+
+        .layer-num {
+            font-size: 0.7rem;
+            letter-spacing: 0.3rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .layer-name {
+            font-size: 1.4rem;
+            font-weight: 300;
+            letter-spacing: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .layer-btn.wave .layer-name     { color: #00d4ff; }
+        .layer-btn.circuit .layer-name  { color: #ffa333; }
+        .layer-btn.function .layer-name { color: #c77dff; }
+        .layer-btn.converge .layer-name { color: #00ffc8; }
+
+        .layer-master {
+            font-size: 0.7rem;
+            letter-spacing: 0.15rem;
+            color: var(--muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .layer-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .layer-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .layer-stat-val {
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 0.1rem;
+        }
+
+        .layer-btn.wave .layer-stat-val     { color: #00d4ff; }
+        .layer-btn.circuit .layer-stat-val  { color: #ffa333; }
+        .layer-btn.function .layer-stat-val { color: #c77dff; }
+        .layer-btn.converge .layer-stat-val { color: #00ffc8; }
+
+        .layer-stat-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.15rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .layer-desc {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .layer-cta {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.2rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .layer-btn:hover .layer-cta { opacity: 1; }
+
+        /* Pipeline postcard button */
+        .postcard-btn {
+            display: block;
+            text-decoration: none;
+            padding: 1.5rem 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(10, 10, 10, 0.6);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .postcard-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #ffa333, #c77dff, #00ffc8);
+        }
+
+        .postcard-btn:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            background: rgba(20, 20, 20, 0.9);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.06);
+        }
+
+        .postcard-btn-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.3rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .postcard-btn-title {
+            font-size: 1rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+        }
+
+        .postcard-btn-sub {
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Locked badge */
+        .locked-indicator {
+            display: inline-block;
+            font-size: 0.6rem;
+            letter-spacing: 0.2rem;
+            padding: 0.2rem 0.6rem;
+            border: 1px solid rgba(0, 255, 200, 0.3);
+            color: #00ffc8;
+            margin-bottom: 0.8rem;
+        }
+
+        /* ============================================================ */
+
         /* Status */
         .status {
             text-align: center;
@@ -347,6 +593,14 @@
                 width: 300px;
                 height: 300px;
             }
+
+            .layer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline-flow {
+                gap: 0.3rem;
+            }
         }
     </style>
 </head>
@@ -429,10 +683,136 @@
             </p>
         </section>
 
+        <!-- VORA Pipeline Section -->
+        <section class="vora-section">
+            <p class="vora-section-label">Implementation</p>
+            <h2 class="vora-section-title">VORA</h2>
+            <p class="vora-section-sub">
+                Vortex Optimized Reasoning Architecture — the framework trained into weights.<br>
+                Qwen3.5-9B-Base · Four sovereign layers · One merged model · Pipeline complete.
+            </p>
+
+            <!-- Pipeline flow -->
+            <div class="pipeline-flow">
+                <div class="flow-node locked">VORA_WAVE</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node locked">VORA_CIRCUIT</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node locked">VORA_FUNCTION</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node locked">VORA_CONVERGE</div>
+            </div>
+
+            <!-- Layer buttons -->
+            <div class="layer-grid">
+
+                <a class="layer-btn wave" href="vora_wave.html" target="_blank">
+                    <div class="layer-num">LAYER 01</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="layer-name">VORA_WAVE</div>
+                    <div class="layer-master">MASTER_1b · 102 examples · 10 epochs</div>
+                    <div class="layer-stats">
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.037</div>
+                            <div class="layer-stat-label">Final Loss</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">98.5%</div>
+                            <div class="layer-stat-label">Accuracy</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">17</div>
+                            <div class="layer-stat-label">Domains</div>
+                        </div>
+                    </div>
+                    <div class="layer-desc">SVP A1–G7–Z1 symbolic reasoning. Digital root arithmetic. Adversarial rejection across all 17 capability domains.</div>
+                    <div class="layer-cta">View Dashboard →</div>
+                </a>
+
+                <a class="layer-btn circuit" href="vora_circuit.html" target="_blank">
+                    <div class="layer-num">LAYER 02</div>
+                    <div class="locked-indicator" style="border-color:rgba(255,163,51,0.3);color:#ffa333;">✓ LOCKED</div>
+                    <div class="layer-name">VORA_CIRCUIT</div>
+                    <div class="layer-master">MASTER_2d · 116 examples · 10 epochs · 4 iterations</div>
+                    <div class="layer-stats">
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.021</div>
+                            <div class="layer-stat-label">Final Loss</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">99.28%</div>
+                            <div class="layer-stat-label">Accuracy</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">180</div>
+                            <div class="layer-stat-label">State Constant</div>
+                        </div>
+                    </div>
+                    <div class="layer-desc">Material circuit 1-2-4-8-7-5 vs flux field 3-6-9. Complete domain separation. 180-State constant verified under adversarial pressure.</div>
+                    <div class="layer-cta">View Dashboard →</div>
+                </a>
+
+                <a class="layer-btn function" href="vora_function.html" target="_blank">
+                    <div class="layer-num">LAYER 03</div>
+                    <div class="locked-indicator" style="border-color:rgba(199,125,255,0.3);color:#c77dff;">✓ LOCKED</div>
+                    <div class="layer-name">VORA_FUNCTION</div>
+                    <div class="layer-master">MASTER_4 · 70 examples · 12 epochs</div>
+                    <div class="layer-stats">
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.075</div>
+                            <div class="layer-stat-label">Final Loss</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">97.46%</div>
+                            <div class="layer-stat-label">Accuracy</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.088</div>
+                            <div class="layer-stat-label">Entropy Floor</div>
+                        </div>
+                    </div>
+                    <div class="layer-desc">Functional cognition. Pre-generation alignment. The model identifies what kind of question it faces before answering. Register control confirmed.</div>
+                    <div class="layer-cta">View Dashboard →</div>
+                </a>
+
+                <a class="layer-btn converge" href="vora_converge.html" target="_blank">
+                    <div class="layer-num">LAYER 04</div>
+                    <div class="locked-indicator" style="border-color:rgba(0,255,200,0.3);color:#00ffc8;">✓ LOCKED</div>
+                    <div class="layer-name">VORA_CONVERGE</div>
+                    <div class="layer-master">MASTER_3 sovereign · 58 examples · 10 epochs</div>
+                    <div class="layer-stats">
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.0255</div>
+                            <div class="layer-stat-label">Final Loss</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">99.29%</div>
+                            <div class="layer-stat-label">Accuracy</div>
+                        </div>
+                        <div class="layer-stat">
+                            <div class="layer-stat-val">0.041</div>
+                            <div class="layer-stat-label">Entropy</div>
+                        </div>
+                    </div>
+                    <div class="layer-desc">Sovereign training on base Qwen — no VORA corpus. Pure information theory. Geometric constraint systems identified independently. Emergence confirmed at merge.</div>
+                    <div class="layer-cta">View Dashboard →</div>
+                </a>
+
+            </div>
+
+            <!-- Pipeline postcard -->
+            <a class="postcard-btn" href="vora_pipeline.html" target="_blank">
+                <div class="postcard-btn-label">Full Pipeline Summary</div>
+                <div class="postcard-btn-title">WAVE → CIRCUIT → FUNCTION → CONVERGE</div>
+                <div class="postcard-btn-sub">346 examples · ~44h training · 98.6% avg accuracy · emergence confirmed</div>
+            </a>
+
+        </section>
+
         <!-- Status -->
         <section class="status">
             <p class="status-label">Current State</p>
-            <p class="status-text">RESEARCH PHASE — PATTERN FORMALIZATION</p>
+            <p class="status-text">PIPELINE COMPLETE — VORA_CONVERGE LOCKED</p>
         </section>
 
         <!-- Contact -->
@@ -442,7 +822,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>VORAIX SYSTEMS © 2025</p>
+            <p>VORAIX SYSTEMS © 2026</p>
             <p style="margin-top: 0.5rem;"><a href="https://github.com/VORAIX-Systems" target="_blank">GITHUB</a></p>
         </footer>
     </div>

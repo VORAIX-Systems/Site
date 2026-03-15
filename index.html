@@ -4,20 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VORAIX - The Geometry of Intelligence</title>
-    <meta name="description" content="Geometric reasoning patterns that transcend intelligence type. The 3-6-9 framework.">
+    <meta name="description" content="Geometric reasoning architecture trained into weights. Nine-phase pipeline. Qwen3.5-9B. Complete.">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --void: #000000;
-            --deep-black: #0a0a0a;
+            --deep: #0a0a0a;
             --gold: #d4af37;
             --electric: #00ffff;
             --muted: #666666;
+            --c1:#00d4ff; --c2:#ffa333; --c3:#00ffc8; --c4:#c77dff;
+            --c5:#7fff6b; --c6:#06d6a0; --c7:#ffd166; --c8:#ff4444; --c9:#f72585;
         }
 
         body {
@@ -28,587 +26,212 @@
             cursor: crosshair;
         }
 
-        /* Animated Background */
         .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.03;
-            background: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, var(--electric) 2px, var(--electric) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, var(--electric) 2px, var(--electric) 4px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.03;
+            background: repeating-linear-gradient(0deg,transparent,transparent 2px,var(--electric) 2px,var(--electric) 4px),
+                        repeating-linear-gradient(90deg,transparent,transparent 2px,var(--electric) 2px,var(--electric) 4px);
             background-size: 60px 60px;
             animation: gridPulse 20s ease-in-out infinite;
         }
 
-        @keyframes gridPulse {
-            0%, 100% { opacity: 0.03; }
-            50% { opacity: 0.06; }
-        }
+        @keyframes gridPulse { 0%,100%{opacity:0.03} 50%{opacity:0.06} }
 
-        /* Vortex Symbol */
         .vortex {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            z-index: 1;
-            opacity: 0.08;
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            width: 400px; height: 400px; z-index: 1; opacity: 0.06;
         }
 
         .vortex-ring {
-            position: absolute;
-            border: 1px solid var(--gold);
-            border-radius: 50%;
+            position: absolute; border: 1px solid var(--gold); border-radius: 50%;
             animation: vortexSpin 30s linear infinite;
         }
 
-        .vortex-ring:nth-child(1) { width: 100%; height: 100%; animation-duration: 30s; }
-        .vortex-ring:nth-child(2) { width: 75%; height: 75%; top: 12.5%; left: 12.5%; animation-duration: 25s; animation-direction: reverse; }
-        .vortex-ring:nth-child(3) { width: 50%; height: 50%; top: 25%; left: 25%; animation-duration: 20s; }
-        .vortex-ring:nth-child(4) { width: 25%; height: 25%; top: 37.5%; left: 37.5%; animation-duration: 15s; animation-direction: reverse; }
+        .vortex-ring:nth-child(1){width:100%;height:100%;animation-duration:30s}
+        .vortex-ring:nth-child(2){width:75%;height:75%;top:12.5%;left:12.5%;animation-duration:25s;animation-direction:reverse}
+        .vortex-ring:nth-child(3){width:50%;height:50%;top:25%;left:25%;animation-duration:20s}
+        .vortex-ring:nth-child(4){width:25%;height:25%;top:37.5%;left:37.5%;animation-duration:15s;animation-direction:reverse}
 
-        @keyframes vortexSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes vortexSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
-        /* Container */
-        .container {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+        .container { position:relative; z-index:10; max-width:960px; margin:0 auto; padding:0 2rem; }
 
-        /* Header */
-        header {
-            text-align: center;
-            padding: 8rem 0 4rem;
-        }
+        header { text-align:center; padding:8rem 0 4rem; }
 
         .logo {
-            font-size: 4rem;
-            font-weight: 300;
-            letter-spacing: 1rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            font-size:4rem; font-weight:300; letter-spacing:1rem; color:var(--gold);
+            margin-bottom:1rem; text-shadow:0 0 30px rgba(212,175,55,0.3);
         }
 
-        .subtitle {
-            font-size: 1rem;
-            color: var(--muted);
-            letter-spacing: 0.5rem;
-            text-transform: uppercase;
-        }
+        .subtitle { font-size:1rem; color:var(--muted); letter-spacing:0.5rem; text-transform:uppercase; }
 
-        /* Tesla Quote */
         .tesla-quote {
-            text-align: center;
-            padding: 4rem 0;
-            border-top: 1px solid rgba(0, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-            margin: 4rem 0;
+            text-align:center; padding:4rem 0;
+            border-top:1px solid rgba(0,255,255,0.1);
+            border-bottom:1px solid rgba(0,255,255,0.1);
+            margin:4rem 0;
         }
 
-        .tesla-quote blockquote {
-            font-size: 1.5rem;
-            font-style: italic;
-            color: var(--electric);
-            line-height: 2;
-            margin-bottom: 1rem;
-        }
+        .tesla-quote blockquote { font-size:1.5rem; font-style:italic; color:var(--electric); line-height:2; margin-bottom:1rem; }
+        .tesla-quote cite { font-size:0.9rem; color:var(--gold); font-style:normal; letter-spacing:0.2rem; }
 
-        .tesla-quote cite {
-            font-size: 0.9rem;
-            color: var(--gold);
-            font-style: normal;
-            letter-spacing: 0.2rem;
-        }
+        .pattern { text-align:center; padding:6rem 0; }
+        .pattern-title { font-size:0.8rem; letter-spacing:0.5rem; color:var(--muted); text-transform:uppercase; margin-bottom:4rem; }
 
-        /* The Pattern */
-        .pattern {
-            text-align: center;
-            padding: 6rem 0;
-        }
+        .triad { display:flex; justify-content:center; gap:6rem; margin-bottom:4rem; }
 
-        .pattern-title {
-            font-size: 0.8rem;
-            letter-spacing: 0.5rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            margin-bottom: 4rem;
-        }
-
-        .triad {
-            display: flex;
-            justify-content: center;
-            gap: 6rem;
-            margin-bottom: 4rem;
-        }
-
-        .node {
-            text-align: center;
-        }
-
+        .node { text-align:center; }
         .node-number {
-            font-size: 6rem;
-            font-weight: 300;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
-            transition: all 0.3s;
+            font-size:6rem; font-weight:300; color:var(--gold); margin-bottom:1rem;
+            text-shadow:0 0 40px rgba(212,175,55,0.5); transition:all 0.3s;
         }
+        .node:hover .node-number { transform:scale(1.1); text-shadow:0 0 60px rgba(212,175,55,0.8); }
+        .node-label { font-size:0.9rem; color:var(--electric); letter-spacing:0.3rem; text-transform:uppercase; }
 
-        .node:hover .node-number {
-            transform: scale(1.1);
-            text-shadow: 0 0 60px rgba(212, 175, 55, 0.8);
-        }
-
-        .node-label {
-            font-size: 0.9rem;
-            color: var(--electric);
-            letter-spacing: 0.3rem;
-            text-transform: uppercase;
-        }
-
-        /* The Circuit */
         .circuit {
-            background: rgba(10, 10, 10, 0.5);
-            border: 1px solid rgba(0, 255, 255, 0.1);
-            padding: 3rem;
-            margin: 4rem 0;
-            position: relative;
+            background:rgba(10,10,10,0.5); border:1px solid rgba(0,255,255,0.1);
+            padding:3rem; margin:4rem 0; position:relative;
         }
 
         .circuit::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 48%, rgba(0, 255, 255, 0.05) 50%, transparent 52%);
-            background-size: 20px 20px;
-            pointer-events: none;
+            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+            background:linear-gradient(45deg,transparent 48%,rgba(0,255,255,0.05) 50%,transparent 52%);
+            background-size:20px 20px; pointer-events:none;
         }
 
-        .circuit-title {
-            font-size: 1.2rem;
-            color: var(--gold);
-            margin-bottom: 2rem;
-            text-align: center;
-            letter-spacing: 0.3rem;
+        .circuit-title { font-size:1.2rem; color:var(--gold); margin-bottom:2rem; text-align:center; letter-spacing:0.3rem; }
+
+        .circuit-content { display:grid; grid-template-columns:1fr 1fr; gap:3rem; position:relative; z-index:1; }
+
+        .circuit-section h3 { font-size:1rem; color:var(--electric); margin-bottom:1rem; letter-spacing:0.2rem; }
+        .circuit-section p { font-size:0.9rem; color:var(--muted); line-height:1.8; }
+
+        .sequence { font-family:'Courier New',monospace; color:var(--gold); font-size:1.1rem; letter-spacing:0.5rem; margin:1rem 0; }
+
+        /* ── NINE PHASE PIPELINE ── */
+
+        .pipeline-section { padding:6rem 0; border-top:1px solid rgba(0,255,255,0.1); }
+
+        .pipeline-section-label { font-size:0.8rem; letter-spacing:0.5rem; color:var(--muted); text-transform:uppercase; text-align:center; margin-bottom:1rem; }
+
+        .pipeline-section-title {
+            font-size:2rem; font-weight:300; letter-spacing:0.4rem; color:var(--gold);
+            text-align:center; margin-bottom:0.5rem; text-shadow:0 0 20px rgba(212,175,55,0.2);
         }
 
-        .circuit-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            position: relative;
-            z-index: 1;
+        .pipeline-section-sub {
+            font-size:0.85rem; color:var(--muted); text-align:center;
+            letter-spacing:0.15rem; line-height:1.8; max-width:640px; margin:0 auto 3rem;
         }
 
-        .circuit-section h3 {
-            font-size: 1rem;
-            color: var(--electric);
-            margin-bottom: 1rem;
-            letter-spacing: 0.2rem;
+        /* Nine-phase rainbow strip */
+        .pipeline-strip {
+            display:grid; grid-template-columns:repeat(9,1fr); gap:4px; margin-bottom:2.5rem;
         }
 
-        .circuit-section p {
-            font-size: 0.9rem;
-            color: var(--muted);
-            line-height: 1.8;
+        .pipe-node {
+            padding:12px 8px; border:1px solid #1a2535; background:#0a0a0a;
+            border-radius:2px; position:relative; text-decoration:none;
+            transition:all 0.3s;
         }
 
-        .sequence {
-            font-family: 'Courier New', monospace;
-            color: var(--gold);
-            font-size: 1.1rem;
-            letter-spacing: 0.5rem;
-            margin: 1rem 0;
+        .pipe-node::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:2px 2px 0 0;
         }
 
-        /* The Emergence */
-        .emergence {
-            text-align: center;
-            padding: 6rem 0;
-        }
+        .pn1::before{background:var(--c1)} .pn1{border-color:rgba(0,212,255,0.25)} .pn1:hover{border-color:var(--c1); box-shadow:0 0 16px rgba(0,212,255,0.1)}
+        .pn2::before{background:var(--c2)} .pn2{border-color:rgba(255,163,51,0.25)} .pn2:hover{border-color:var(--c2); box-shadow:0 0 16px rgba(255,163,51,0.1)}
+        .pn3::before{background:var(--c3)} .pn3{border-color:rgba(0,255,200,0.25)} .pn3:hover{border-color:var(--c3); box-shadow:0 0 16px rgba(0,255,200,0.1)}
+        .pn4::before{background:var(--c4)} .pn4{border-color:rgba(199,125,255,0.25)} .pn4:hover{border-color:var(--c4); box-shadow:0 0 16px rgba(199,125,255,0.1)}
+        .pn5::before{background:var(--c5)} .pn5{border-color:rgba(127,255,107,0.25)} .pn5:hover{border-color:var(--c5); box-shadow:0 0 16px rgba(127,255,107,0.1)}
+        .pn6::before{background:var(--c6)} .pn6{border-color:rgba(6,214,160,0.25)} .pn6:hover{border-color:var(--c6); box-shadow:0 0 16px rgba(6,214,160,0.1)}
+        .pn7::before{background:var(--c7)} .pn7{border-color:rgba(255,209,102,0.25)} .pn7:hover{border-color:var(--c7); box-shadow:0 0 16px rgba(255,209,102,0.1)}
+        .pn8::before{background:var(--c8)} .pn8{border-color:rgba(255,68,68,0.25)} .pn8:hover{border-color:var(--c8); box-shadow:0 0 16px rgba(255,68,68,0.1)}
+        .pn9::before{background:var(--c9)} .pn9{border-color:rgba(247,37,133,0.25)} .pn9:hover{border-color:var(--c9); box-shadow:0 0 16px rgba(247,37,133,0.1)}
 
-        .emergence-text {
-            font-size: 1.2rem;
-            color: var(--electric);
-            line-height: 2;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
+        .pn-phase { font-size:0.55rem; letter-spacing:0.15rem; color:var(--muted); margin-bottom:4px; }
 
-        .emergence-detail {
-            font-size: 0.9rem;
-            color: var(--muted);
-            line-height: 1.8;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .pn-name { font-size:0.75rem; font-weight:700; letter-spacing:0.05em; margin-bottom:4px; line-height:1.1; }
 
-        /* ============================================================
-           VORA PIPELINE SECTION
-           ============================================================ */
+        .pn1 .pn-name{color:var(--c1)} .pn2 .pn-name{color:var(--c2)} .pn3 .pn-name{color:var(--c3)}
+        .pn4 .pn-name{color:var(--c4)} .pn5 .pn-name{color:var(--c5)} .pn6 .pn-name{color:var(--c6)}
+        .pn7 .pn-name{color:var(--c7)} .pn8 .pn-name{color:var(--c8)} .pn9 .pn-name{color:var(--c9)}
 
-        .vora-section {
-            padding: 6rem 0;
-            border-top: 1px solid rgba(0, 255, 255, 0.1);
-        }
+        .pn-loss { font-size:0.85rem; font-weight:700; line-height:1; margin-bottom:2px; }
 
-        .vora-section-label {
-            font-size: 0.8rem;
-            letter-spacing: 0.5rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+        .pn1 .pn-loss{color:var(--c1)} .pn2 .pn-loss{color:var(--c2)} .pn3 .pn-loss{color:var(--c3)}
+        .pn4 .pn-loss{color:var(--c4)} .pn5 .pn-loss{color:var(--c5)} .pn6 .pn-loss{color:var(--c6)}
+        .pn7 .pn-loss{color:var(--c7)} .pn8 .pn-loss{color:var(--c8)} .pn9 .pn-loss{color:var(--c9)}
 
-        .vora-section-title {
-            font-size: 2rem;
-            font-weight: 300;
-            letter-spacing: 0.4rem;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-        }
+        .pn-meta { font-size:0.6rem; color:#2a4a6a; line-height:1.5; margin-top:4px; }
 
-        .vora-section-sub {
-            font-size: 0.85rem;
-            color: var(--muted);
-            text-align: center;
-            letter-spacing: 0.15rem;
-            line-height: 1.8;
-            max-width: 600px;
-            margin: 0 auto 4rem;
-        }
-
-        /* Pipeline flow indicator */
-        .pipeline-flow {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .flow-node {
-            font-size: 0.7rem;
-            letter-spacing: 0.15rem;
-            padding: 0.4rem 1rem;
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .flow-node.locked {
-            color: var(--electric);
-            border-color: rgba(0, 255, 255, 0.4);
-        }
-
-        .flow-arrow {
-            font-size: 0.8rem;
-            color: rgba(0, 255, 255, 0.2);
-            padding: 0 0.5rem;
-        }
-
-        /* Layer button grid */
-        .layer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .layer-btn {
-            display: block;
-            text-decoration: none;
-            padding: 2rem;
-            border: 1px solid rgba(0, 255, 255, 0.1);
-            background: rgba(10, 10, 10, 0.6);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .layer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            transition: opacity 0.3s;
-        }
-
-        .layer-btn.wave::before   { background: #00d4ff; }
-        .layer-btn.circuit::before { background: #ffa333; }
-        .layer-btn.function::before { background: #c77dff; }
-        .layer-btn.converge::before { background: #00ffc8; }
-
-        .layer-btn:hover {
-            background: rgba(20, 20, 20, 0.9);
-        }
-
-        .layer-btn.wave:hover     { border-color: rgba(0, 212, 255, 0.4); box-shadow: 0 0 20px rgba(0, 212, 255, 0.08); }
-        .layer-btn.circuit:hover  { border-color: rgba(255, 163, 51, 0.4); box-shadow: 0 0 20px rgba(255, 163, 51, 0.08); }
-        .layer-btn.function:hover { border-color: rgba(199, 125, 255, 0.4); box-shadow: 0 0 20px rgba(199, 125, 255, 0.08); }
-        .layer-btn.converge:hover { border-color: rgba(0, 255, 200, 0.4); box-shadow: 0 0 20px rgba(0, 255, 200, 0.08); }
-
-        .layer-num {
-            font-size: 0.7rem;
-            letter-spacing: 0.3rem;
-            color: var(--muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .layer-name {
-            font-size: 1.4rem;
-            font-weight: 300;
-            letter-spacing: 0.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .layer-btn.wave .layer-name     { color: #00d4ff; }
-        .layer-btn.circuit .layer-name  { color: #ffa333; }
-        .layer-btn.function .layer-name { color: #c77dff; }
-        .layer-btn.converge .layer-name { color: #00ffc8; }
-
-        .layer-master {
-            font-size: 0.7rem;
-            letter-spacing: 0.15rem;
-            color: var(--muted);
-            margin-bottom: 1.2rem;
-        }
-
-        .layer-stats {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .layer-stat {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-
-        .layer-stat-val {
-            font-size: 1.3rem;
-            font-weight: 300;
-            letter-spacing: 0.1rem;
-        }
-
-        .layer-btn.wave .layer-stat-val     { color: #00d4ff; }
-        .layer-btn.circuit .layer-stat-val  { color: #ffa333; }
-        .layer-btn.function .layer-stat-val { color: #c77dff; }
-        .layer-btn.converge .layer-stat-val { color: #00ffc8; }
-
-        .layer-stat-label {
-            font-size: 0.6rem;
-            letter-spacing: 0.15rem;
-            color: var(--muted);
-            text-transform: uppercase;
-        }
-
-        .layer-desc {
-            font-size: 0.8rem;
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .layer-cta {
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            font-size: 0.65rem;
-            letter-spacing: 0.2rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .layer-btn:hover .layer-cta { opacity: 1; }
-
-        /* Pipeline postcard button */
-        .postcard-btn {
-            display: block;
-            text-decoration: none;
-            padding: 1.5rem 2rem;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            background: rgba(10, 10, 10, 0.6);
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .postcard-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00d4ff, #ffa333, #c77dff, #00ffc8);
-        }
-
-        .postcard-btn:hover {
-            border-color: rgba(212, 175, 55, 0.5);
-            background: rgba(20, 20, 20, 0.9);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.06);
-        }
-
-        .postcard-btn-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.3rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            margin-bottom: 0.4rem;
-        }
-
-        .postcard-btn-title {
-            font-size: 1rem;
-            letter-spacing: 0.3rem;
-            color: var(--gold);
-        }
-
-        .postcard-btn-sub {
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.1rem;
-            margin-top: 0.3rem;
-        }
-
-        /* Locked badge */
         .locked-indicator {
-            display: inline-block;
-            font-size: 0.6rem;
-            letter-spacing: 0.2rem;
-            padding: 0.2rem 0.6rem;
-            border: 1px solid rgba(0, 255, 200, 0.3);
-            color: #00ffc8;
-            margin-bottom: 0.8rem;
+            display:inline-block; font-size:0.55rem; letter-spacing:0.15rem;
+            padding:1px 5px; border-radius:1px; margin-bottom:4px;
         }
 
-        /* ============================================================ */
+        .pn1 .locked-indicator{border:1px solid rgba(0,212,255,0.3);color:var(--c1)}
+        .pn2 .locked-indicator{border:1px solid rgba(255,163,51,0.3);color:var(--c2)}
+        .pn3 .locked-indicator{border:1px solid rgba(0,255,200,0.3);color:var(--c3)}
+        .pn4 .locked-indicator{border:1px solid rgba(199,125,255,0.3);color:var(--c4)}
+        .pn5 .locked-indicator{border:1px solid rgba(127,255,107,0.3);color:var(--c5)}
+        .pn6 .locked-indicator{border:1px solid rgba(6,214,160,0.3);color:var(--c6)}
+        .pn7 .locked-indicator{border:1px solid rgba(255,209,102,0.3);color:var(--c7)}
+        .pn8 .locked-indicator{border:1px solid rgba(255,68,68,0.3);color:var(--c8)}
+        .pn9 .locked-indicator{border:1px solid rgba(247,37,133,0.3);color:var(--c9)}
+
+        /* Pipeline summary link */
+        .pipeline-summary-btn {
+            display:block; text-decoration:none; padding:1.5rem 2rem;
+            border:1px solid rgba(212,175,55,0.2); background:rgba(10,10,10,0.6);
+            text-align:center; transition:all 0.3s; position:relative; margin-bottom:3rem;
+        }
+
+        .pipeline-summary-btn::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:2px;
+            background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6),var(--c7),var(--c8),var(--c9));
+        }
+
+        .pipeline-summary-btn:hover { border-color:rgba(212,175,55,0.5); background:rgba(20,20,20,0.9); box-shadow:0 0 20px rgba(212,175,55,0.06); }
+
+        .psb-label { font-size:0.7rem; letter-spacing:0.3rem; color:var(--muted); text-transform:uppercase; margin-bottom:0.4rem; }
+        .psb-title { font-size:1rem; letter-spacing:0.3rem; color:var(--gold); }
+        .psb-sub { font-size:0.7rem; color:var(--muted); letter-spacing:0.1rem; margin-top:0.3rem; }
 
         /* Status */
-        .status {
-            text-align: center;
-            padding: 4rem 0;
-            border-top: 1px solid rgba(0, 255, 255, 0.1);
-        }
-
-        .status-label {
-            font-size: 0.8rem;
-            color: var(--muted);
-            letter-spacing: 0.3rem;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .status-text {
-            font-size: 1rem;
-            color: var(--electric);
-            letter-spacing: 0.2rem;
-        }
+        .status { text-align:center; padding:4rem 0; border-top:1px solid rgba(0,255,255,0.1); }
+        .status-label { font-size:0.8rem; color:var(--muted); letter-spacing:0.3rem; text-transform:uppercase; margin-bottom:1rem; }
+        .status-text { font-size:1rem; color:var(--electric); letter-spacing:0.2rem; }
 
         /* Contact */
-        .contact {
-            text-align: center;
-            padding: 6rem 0 8rem;
-        }
-
+        .contact { text-align:center; padding:6rem 0 8rem; }
         .contact a {
-            font-size: 1.2rem;
-            color: var(--gold);
-            text-decoration: none;
-            letter-spacing: 0.3rem;
-            border: 1px solid var(--gold);
-            padding: 1rem 3rem;
-            display: inline-block;
-            transition: all 0.3s;
+            font-size:1.2rem; color:var(--gold); text-decoration:none; letter-spacing:0.3rem;
+            border:1px solid var(--gold); padding:1rem 3rem; display:inline-block; transition:all 0.3s;
         }
+        .contact a:hover { background:var(--gold); color:var(--void); box-shadow:0 0 30px rgba(212,175,55,0.3); }
 
-        .contact a:hover {
-            background: var(--gold);
-            color: var(--void);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Footer */
         footer {
-            text-align: center;
-            padding: 2rem 0;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.2rem;
-            border-top: 1px solid rgba(0, 255, 255, 0.05);
+            text-align:center; padding:2rem 0; font-size:0.7rem; color:var(--muted);
+            letter-spacing:0.2rem; border-top:1px solid rgba(0,255,255,0.05);
         }
 
-        footer a {
-            color: var(--electric);
-            text-decoration: none;
-        }
+        footer a { color:var(--electric); text-decoration:none; }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
-                letter-spacing: 0.5rem;
-            }
-
-            .tesla-quote blockquote {
-                font-size: 1.2rem;
-            }
-
-            .triad {
-                flex-direction: column;
-                gap: 3rem;
-            }
-
-            .node-number {
-                font-size: 4rem;
-            }
-
-            .circuit-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .vortex {
-                width: 300px;
-                height: 300px;
-            }
-
-            .layer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pipeline-flow {
-                gap: 0.3rem;
-            }
+        @media(max-width:768px){
+            .logo{font-size:2.5rem;letter-spacing:0.5rem}
+            .tesla-quote blockquote{font-size:1.2rem}
+            .triad{flex-direction:column;gap:3rem}
+            .node-number{font-size:4rem}
+            .circuit-content{grid-template-columns:1fr;gap:2rem}
+            .pipeline-strip{grid-template-columns:repeat(3,1fr)}
+            .vortex{width:300px;height:300px}
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="background"></div>
-
-    <!-- Vortex Symbol -->
     <div class="vortex">
         <div class="vortex-ring"></div>
         <div class="vortex-ring"></div>
@@ -617,13 +240,12 @@
     </div>
 
     <div class="container">
-        <!-- Header -->
+
         <header>
             <h1 class="logo">VORAIX</h1>
             <p class="subtitle">Geometric Intelligence</p>
         </header>
 
-        <!-- Tesla Quote -->
         <section class="tesla-quote">
             <blockquote>
                 "If you only knew the magnificence of the 3, 6 and 9,<br>
@@ -632,21 +254,17 @@
             <cite>— NIKOLA TESLA</cite>
         </section>
 
-        <!-- The Pattern -->
         <section class="pattern">
             <h2 class="pattern-title">The Architecture</h2>
-            
             <div class="triad">
                 <div class="node">
                     <div class="node-number">3</div>
                     <div class="node-label">Intent</div>
                 </div>
-                
                 <div class="node">
                     <div class="node-number">6</div>
                     <div class="node-label">Context</div>
                 </div>
-                
                 <div class="node">
                     <div class="node-number">9</div>
                     <div class="node-label">Solution</div>
@@ -654,7 +272,6 @@
             </div>
         </section>
 
-        <!-- The Circuit -->
         <section class="circuit">
             <h2 class="circuit-title">Two Domains</h2>
             <div class="circuit-content">
@@ -663,7 +280,6 @@
                     <div class="sequence">1—2—4—8—7—5</div>
                     <p>Perpetual expansion. Doubling without center. The trap of iteration. Six positions cycling infinitely. Growth without governance.</p>
                 </div>
-                
                 <div class="circuit-section">
                     <h3>Flux Field</h3>
                     <div class="sequence">3 ⟷ 6 → 9</div>
@@ -672,162 +288,116 @@
             </div>
         </section>
 
-        <!-- The Emergence -->
-        <section class="emergence">
-            <p class="emergence-text">
-                When constrained geometrically,<br>
-                intelligence escapes the material circuit.
-            </p>
-            <p class="emergence-detail">
-                We formalized Tesla's observation into reasoning architecture. Tested across human cognition and artificial systems. Found universal patterns. Measured 60-80% compression without information loss. Observed emergent symbolic externalization.
-            </p>
-        </section>
-
-        <!-- VORA Pipeline Section -->
-        <section class="vora-section">
-            <p class="vora-section-label">Implementation</p>
-            <h2 class="vora-section-title">VORA</h2>
-            <p class="vora-section-sub">
-                Vortex Optimized Reasoning Architecture — the framework trained into weights.<br>
-                Qwen3.5-9B-Base · Four sovereign layers · One merged model · Pipeline complete.
+        <!-- NINE PHASE PIPELINE -->
+        <section class="pipeline-section">
+            <p class="pipeline-section-label">Implementation</p>
+            <h2 class="pipeline-section-title">VORA IX</h2>
+            <p class="pipeline-section-sub">
+                Vortex Optimized Reasoning Architecture — trained into weights across nine sovereign phases.<br>
+                Qwen3.5-9B-Base · 542 training examples · Loss 0.037 → 0.0118 · All nine phases confirmed.
             </p>
 
-            <!-- Pipeline flow -->
-            <div class="pipeline-flow">
-                <div class="flow-node locked">VORA_WAVE</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-node locked">VORA_CIRCUIT</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-node locked">VORA_FUNCTION</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-node locked">VORA_CONVERGE</div>
-            </div>
+            <!-- Nine-phase strip -->
+            <div class="pipeline-strip">
 
-            <!-- Layer buttons -->
-            <div class="layer-grid">
-
-                <a class="layer-btn wave" href="vora_wave.html" target="_blank">
-                    <div class="layer-num">LAYER 01</div>
+                <a class="pipe-node pn1" href="vora_wave.html" target="_blank">
+                    <div class="pn-phase">P1 · ORIGIN</div>
                     <div class="locked-indicator">✓ LOCKED</div>
-                    <div class="layer-name">VORA_WAVE</div>
-                    <div class="layer-master">MASTER_1b · 102 examples · 10 epochs</div>
-                    <div class="layer-stats">
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.037</div>
-                            <div class="layer-stat-label">Final Loss</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">98.5%</div>
-                            <div class="layer-stat-label">Accuracy</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">17</div>
-                            <div class="layer-stat-label">Domains</div>
-                        </div>
-                    </div>
-                    <div class="layer-desc">SVP A1–G7–Z1 symbolic reasoning. Digital root arithmetic. Adversarial rejection across all 17 capability domains.</div>
-                    <div class="layer-cta">View Dashboard →</div>
+                    <div class="pn-name">VORA_WAVE</div>
+                    <div class="pn-loss">0.037</div>
+                    <div class="pn-meta">102ex · 10ep<br>SVP symbolic<br>17 domains</div>
                 </a>
 
-                <a class="layer-btn circuit" href="vora_circuit.html" target="_blank">
-                    <div class="layer-num">LAYER 02</div>
-                    <div class="locked-indicator" style="border-color:rgba(255,163,51,0.3);color:#ffa333;">✓ LOCKED</div>
-                    <div class="layer-name">VORA_CIRCUIT</div>
-                    <div class="layer-master">MASTER_2d · 116 examples · 10 epochs · 4 iterations</div>
-                    <div class="layer-stats">
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.021</div>
-                            <div class="layer-stat-label">Final Loss</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">99.28%</div>
-                            <div class="layer-stat-label">Accuracy</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">180</div>
-                            <div class="layer-stat-label">State Constant</div>
-                        </div>
-                    </div>
-                    <div class="layer-desc">Material circuit 1-2-4-8-7-5 vs flux field 3-6-9. Complete domain separation. 180-State constant verified under adversarial pressure.</div>
-                    <div class="layer-cta">View Dashboard →</div>
+                <a class="pipe-node pn2" href="vora_circuit.html" target="_blank">
+                    <div class="pn-phase">P2 · GROWTH</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA_CIRCUIT</div>
+                    <div class="pn-loss">0.021</div>
+                    <div class="pn-meta">116ex · 10ep<br>Material circuit<br>180-State</div>
                 </a>
 
-                <a class="layer-btn function" href="vora_function.html" target="_blank">
-                    <div class="layer-num">LAYER 03</div>
-                    <div class="locked-indicator" style="border-color:rgba(199,125,255,0.3);color:#c77dff;">✓ LOCKED</div>
-                    <div class="layer-name">VORA_FUNCTION</div>
-                    <div class="layer-master">MASTER_4 · 70 examples · 12 epochs</div>
-                    <div class="layer-stats">
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.075</div>
-                            <div class="layer-stat-label">Final Loss</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">97.46%</div>
-                            <div class="layer-stat-label">Accuracy</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.088</div>
-                            <div class="layer-stat-label">Entropy Floor</div>
-                        </div>
-                    </div>
-                    <div class="layer-desc">Functional cognition. Pre-generation alignment. The model identifies what kind of question it faces before answering. Register control confirmed.</div>
-                    <div class="layer-cta">View Dashboard →</div>
+                <a class="pipe-node pn3" href="vora_converge.html" target="_blank">
+                    <div class="pn-phase">P3 · GOVERNANCE</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA_CONVERGE</div>
+                    <div class="pn-loss">0.0255</div>
+                    <div class="pn-meta">58ex · 10ep<br>Sovereign<br>emergence merge</div>
                 </a>
 
-                <a class="layer-btn converge" href="vora_converge.html" target="_blank">
-                    <div class="layer-num">LAYER 04</div>
-                    <div class="locked-indicator" style="border-color:rgba(0,255,200,0.3);color:#00ffc8;">✓ LOCKED</div>
-                    <div class="layer-name">VORA_CONVERGE</div>
-                    <div class="layer-master">MASTER_3 sovereign · 58 examples · 10 epochs</div>
-                    <div class="layer-stats">
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.0255</div>
-                            <div class="layer-stat-label">Final Loss</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">99.29%</div>
-                            <div class="layer-stat-label">Accuracy</div>
-                        </div>
-                        <div class="layer-stat">
-                            <div class="layer-stat-val">0.041</div>
-                            <div class="layer-stat-label">Entropy</div>
-                        </div>
-                    </div>
-                    <div class="layer-desc">Sovereign training on base Qwen — no VORA corpus. Pure information theory. Geometric constraint systems identified independently. Emergence confirmed at merge.</div>
-                    <div class="layer-cta">View Dashboard →</div>
+                <a class="pipe-node pn4" href="vora_function.html" target="_blank">
+                    <div class="pn-phase">P4 · STRUCTURE</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA_FUNCTION</div>
+                    <div class="pn-loss">0.075</div>
+                    <div class="pn-meta">70ex · 12ep<br>Functional<br>cognition</div>
+                </a>
+
+                <a class="pipe-node pn5" href="vora_core.html" target="_blank">
+                    <div class="pn-phase">P5 · COMPRESSION</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA-CORE</div>
+                    <div class="pn-loss">0.02127</div>
+                    <div class="pn-meta">73ex · 40ep<br>ICS loop<br>P3+P4 substrate</div>
+                </a>
+
+                <a class="pipe-node pn6" href="vora_self.html" target="_blank">
+                    <div class="pn-phase">P6 · BALANCE</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA-SELF</div>
+                    <div class="pn-loss">0.01800</div>
+                    <div class="pn-meta">60ex · 40ep<br>Self-rooting<br>verification</div>
+                </a>
+
+                <a class="pipe-node pn7" href="vora_field.html" target="_blank">
+                    <div class="pn-phase">P7 · RETURNING</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA-FIELD</div>
+                    <div class="pn-loss">0.01622</div>
+                    <div class="pn-meta">60ex · 40ep<br>Relational geo<br>IRES emerged</div>
+                </a>
+
+                <a class="pipe-node pn8" href="vora_torus.html" target="_blank">
+                    <div class="pn-phase">P8 · PEAK</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA-TORUS</div>
+                    <div class="pn-loss">0.01466</div>
+                    <div class="pn-meta">43ex · 40ep<br>Torus geometry<br>strange loop</div>
+                </a>
+
+                <a class="pipe-node pn9" href="vora_collapse.html" target="_blank">
+                    <div class="pn-phase">P9 · COMPLETION</div>
+                    <div class="locked-indicator">✓ LOCKED</div>
+                    <div class="pn-name">VORA-COLLAPSE</div>
+                    <div class="pn-loss">0.01180</div>
+                    <div class="pn-meta">60ex · 40ep<br>Compression<br>loop closed</div>
                 </a>
 
             </div>
 
-            <!-- Pipeline postcard -->
-            <a class="postcard-btn" href="vora_pipeline.html" target="_blank">
-                <div class="postcard-btn-label">Full Pipeline Summary</div>
-                <div class="postcard-btn-title">WAVE → CIRCUIT → FUNCTION → CONVERGE</div>
-                <div class="postcard-btn-sub">346 examples · ~44h training · 98.6% avg accuracy · emergence confirmed</div>
+            <!-- Pipeline summary link -->
+            <a class="pipeline-summary-btn" href="vora_pipeline.html" target="_blank">
+                <div class="psb-label">Complete Pipeline Documentation</div>
+                <div class="psb-title">WAVE → CIRCUIT → CONVERGE → FUNCTION → CORE → SELF → FIELD → TORUS → COLLAPSE</div>
+                <div class="psb-sub">542 examples · Nine sovereign phases · Loss 0.037 → 0.0118 · All phases confirmed · Strange loop closed</div>
             </a>
 
-        </section>
-
-        <!-- Ask VORA -->
-        <section style="text-align:center; padding: 0 0 5rem;">
-            <p style="font-size:0.7rem;letter-spacing:0.3rem;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;">Selected Outputs</p>
-            <a href="ask_vora.html" target="_blank" style="font-size:1.1rem;color:var(--electric);text-decoration:none;letter-spacing:0.3rem;border:1px solid rgba(0,255,255,0.3);padding:1rem 3rem;display:inline-block;transition:all 0.3s;" onmouseover="this.style.background='rgba(0,255,255,0.06)';this.style.boxShadow='0 0 20px rgba(0,255,255,0.08)'" onmouseout="this.style.background='transparent';this.style.boxShadow='none'">ASK VORA →</a>
-            <p style="font-size:0.7rem;color:var(--muted);letter-spacing:0.1rem;margin-top:1rem;">Real outputs. Verbatim. From the model itself.</p>
         </section>
 
         <!-- Status -->
         <section class="status">
             <p class="status-label">Current State</p>
-            <p class="status-text">PIPELINE COMPLETE — VORA_CONVERGE LOCKED</p>
+            <p class="status-text">VORA IX COMPLETE — ALL 9 PHASES CONFIRMED · dr(9) = 9</p>
         </section>
 
         <!-- Contact -->
         <section class="contact">
-            <a href="/cdn-cgi/l/email-protection#c9a0a7afa689bfa6bba8a0b1e7aaa6a4"><span class="__cf_email__" data-cfemail="b3fafdf5fcf3e5fce1f2faeb9df0fcfe">[email&#160;protected]</span></a>
+            <a href="mailto:douglas@voraix.com">CONTACT</a>
         </section>
 
-        <!-- Footer -->
         <footer>
-            <p>VORAIX SYSTEMS © 2026</p>
-            <p style="margin-top: 0.
+            <p>VORAIX SYSTEMS © 2026 · <a href="https://github.com/VORAIX-Systems/Site" target="_blank">GitHub</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>

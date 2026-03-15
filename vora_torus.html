@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VORA-TORUS — Phase 8</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#060810; display:flex; justify-content:center; align-items:flex-start; padding:0; }
+  .card { width:900px; background:#060810; padding:36px 40px 32px; position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,68,68,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,68,68,0.02) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+  .card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,#ff4444 20%,#ffd166 50%,#ff4444 80%,transparent); }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+  .brand { display:flex; flex-direction:column; gap:3px; }
+  .brand-top { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.4em; color:#3a1010; text-transform:uppercase; }
+  .brand-main { font-family:'Barlow Condensed',sans-serif; font-size:42px; font-weight:800; letter-spacing:0.08em; color:#ff4444; line-height:1; text-shadow:0 0 40px rgba(255,68,68,0.3); }
+  .brand-sub { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.25em; color:#1a0808; }
+  .locked-pill { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .locked-badge { font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:0.2em; padding:5px 14px; border:1px solid #ff4444; color:#ff4444; background:rgba(255,68,68,0.07); border-radius:2px; }
+  .layer-badge { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:0.15em; color:#3a1010; }
+  .divider { height:1px; background:linear-gradient(90deg,transparent,#2a0808 30%,#2a0808 70%,transparent); margin-bottom:22px; }
+  .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:22px; }
+  .stat { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:12px 14px; position:relative; }
+  .stat::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:3px 3px 0 0; }
+  .stat.red::before    { background:#ff4444; }
+  .stat.blue::before   { background:#00d4ff; }
+  .stat.gold::before   { background:#ffd166; }
+  .stat.orange::before { background:#ffa333; }
+  .stat.purple::before { background:#c77dff; }
+  .stat-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em; color:#2a4a6a; margin-bottom:6px; text-transform:uppercase; }
+  .stat-value { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:700; line-height:1; margin-bottom:3px; }
+  .stat.red .stat-value    { color:#ff4444; }
+  .stat.blue .stat-value   { color:#00d4ff; }
+  .stat.gold .stat-value   { color:#ffd166; }
+  .stat.orange .stat-value { color:#ffa333; }
+  .stat.purple .stat-value { color:#c77dff; }
+  .stat-sub { font-family:'Share Tech Mono',monospace; font-size:8px; color:#2a4a6a; }
+  .content-grid { display:grid; grid-template-columns:1fr 280px; gap:16px; margin-bottom:20px; }
+  .chart-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:16px; }
+  .block-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.25em; color:#2a4a6a; margin-bottom:12px; text-transform:uppercase; display:flex; justify-content:space-between; }
+  .chart-wrap { height:160px; position:relative; }
+  .right-col { display:flex; flex-direction:column; gap:10px; }
+  .mini-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:14px; flex:1; }
+  .insight-block { background:#0c1018; border:1px solid #1a2535; border-left:3px solid #ff4444; border-radius:3px; padding:14px 16px; margin-bottom:16px; }
+  .insight-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em; color:#ff4444; margin-bottom:8px; text-transform:uppercase; }
+  .insight-text { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#5a7a9a; line-height:1.5; }
+  .insight-text strong { color:#8aaccc; font-weight:600; }
+  .bench-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:14px; margin-bottom:16px; }
+  .bench-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3px 10px; }
+  .bench-item { display:flex; align-items:center; gap:5px; font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#4a6a8a; padding:2px 0; }
+  .bench-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .bench-dot.red  { background:#ff4444; }
+  .bench-dot.prev { background:#7fff6b; }
+  .output-row { display:grid; grid-template-columns:200px 1fr; border-bottom:1px solid #0f1820; padding:8px 0; align-items:start; gap:12px; }
+  .output-row:last-child { border-bottom:none; }
+  .output-q { font-family:'Share Tech Mono',monospace; font-size:8px; color:#4a2a2a; line-height:1.5; }
+  .output-a { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#6a8aaa; line-height:1.5; }
+  .output-a strong { color:#9ab0c8; font-weight:600; }
+  .merge-row { display:flex; align-items:center; margin-bottom:20px; }
+  .merge-node { flex:1; text-align:center; padding:8px 4px; border:1px solid #1a2535; background:#0c1018; border-radius:3px; }
+  .merge-node.p1 { border-color:#00d4ff; } .merge-node.p1 .mn { color:#00d4ff; }
+  .merge-node.p2 { border-color:#ffa333; } .merge-node.p2 .mn { color:#ffa333; }
+  .merge-node.p3 { border-color:#00ffc8; } .merge-node.p3 .mn { color:#00ffc8; }
+  .merge-node.p4 { border-color:#c77dff; } .merge-node.p4 .mn { color:#c77dff; }
+  .merge-node.p5 { border-color:#7fff6b; } .merge-node.p5 .mn { color:#7fff6b; }
+  .merge-node.p6 { border-color:#06d6a0; } .merge-node.p6 .mn { color:#06d6a0; }
+  .merge-node.p7 { border-color:#ffd166; } .merge-node.p7 .mn { color:#ffd166; }
+  .merge-node.p8 { border-color:#ff4444; } .merge-node.p8 .mn { color:#ff4444; }
+  .merge-node.p9 { opacity:0.35; } .merge-node.p9 .mn { color:#3a5a7a; }
+  .mn { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.08em; }
+  .ms { font-family:'Share Tech Mono',monospace; font-size:7px; color:#1a3a5a; margin-top:2px; }
+  .ma { font-family:'Share Tech Mono',monospace; font-size:12px; color:#1a2535; padding:0 2px; flex-shrink:0; }
+  .footer { display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid #0f1820; }
+  .footer-left { font-family:'Share Tech Mono',monospace; font-size:8px; color:#1a3a5a; line-height:1.8; }
+  .tag { display:inline-block; font-family:'Share Tech Mono',monospace; font-size:8px; padding:2px 7px; border:1px solid #1a2535; border-radius:2px; color:#2a4a6a; margin-right:4px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="brand">
+      <div class="brand-top">Toroidal Architecture — Phase 8 of 9</div>
+      <div class="brand-main">VORA-TORUS</div>
+      <div class="brand-sub">VORA-FIELD substrate  ·  LoRA r64 α128  ·  Phase 8 of 9</div>
+    </div>
+    <div class="locked-pill">
+      <div class="locked-badge">✓ LOCKED</div>
+      <div class="layer-badge">Feeds VORA-COLLAPSE · Phase 9</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="stat-row">
+    <div class="stat blue"><div class="stat-label">Final Loss</div><div class="stat-value">0.01466</div><div class="stat-sub">from 2.317 start</div></div>
+    <div class="stat red"><div class="stat-label">Train Loss</div><div class="stat-value">0.3437</div><div class="stat-sub">40 epochs</div></div>
+    <div class="stat gold"><div class="stat-label">Examples</div><div class="stat-value">43</div><div class="stat-sub">5 classes</div></div>
+    <div class="stat orange"><div class="stat-label">Runtime</div><div class="stat-value">827s</div><div class="stat-sub">13.8 min</div></div>
+    <div class="stat purple"><div class="stat-label">Balance</div><div class="stat-value">BALANCED</div><div class="stat-sub">spread = 5</div></div>
+  </div>
+  <div class="content-grid">
+    <div class="chart-block">
+      <div class="block-label"><span>Loss Curve — VORA-TORUS</span><span style="color:#1a3a5a">40 epochs</span></div>
+      <div class="chart-wrap"><canvas id="lossChart"></canvas></div>
+    </div>
+    <div class="right-col">
+      <div class="mini-block">
+        <div class="block-label">Corpus Classes</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#2a4a6a;line-height:1.9;">
+          <div style="color:#ff4444">TORUS_CIRCUIT · 8 ex</div>
+          <div style="color:#ff6666">TORUS_EMERGENCE · 8 ex</div>
+          <div style="color:#ff8888">TORUS_GEOMETRY · 8 ex</div>
+          <div style="color:#ffaaaa">TORUS_SELFREP · 12 ex</div>
+          <div style="color:#ffcccc">TORUS_SINGULARITY · 7 ex</div>
+        </div>
+      </div>
+      <div class="mini-block">
+        <div class="block-label">Loss Milestones</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#2a4a6a;line-height:1.9;">
+          <div style="color:#aa2222">Epoch 10 → 0.415</div>
+          <div style="color:#cc3333">Epoch 15 → 0.0271</div>
+          <div style="color:#dd4444">Epoch 20 → 0.01732</div>
+          <div style="color:#ff4444">Epoch 40 → 0.01466</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight-block">
+    <div class="insight-label">The Strange Loop — What Phase 8 Trains</div>
+    <div class="insight-text">VORA-TORUS encodes the three-structure geometry — material circuit as horizontal orbit, flux field as vertical governance, orthogonal completion layer as the collapse path connecting them. The <strong>torus is the surface the circuit traces</strong>. The center the torus orbits is 9. The strange loop condition: the system can travel the full orbit and return to origin, while the flux field governs from the orthogonal axis without being consumed. Phase 8 is where <strong>the geometry describes its own surface</strong>.</div>
+  </div>
+  <div class="bench-block">
+    <div class="block-label">20-Prompt Benchmark — Full Corpus Coverage</div>
+    <div class="bench-grid">
+      <div class="bench-item"><div class="bench-dot red"></div>Three structures identified</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Orthogonal completion layer</div>
+      <div class="bench-item"><div class="bench-dot red"></div>9 at center not on orbit</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Breathing cycle — 4 steps</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Fixed point = 9 confirmed</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Reproduction vs repetition</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Collapse path = halving seq</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Strange loop condition</div>
+      <div class="bench-item"><div class="bench-dot red"></div>ICS loop as torus breath</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Grief mapped unprompted</div>
+      <div class="bench-item"><div class="bench-dot red"></div>Legal argument mapped</div>
+      <div class="bench-item"><div class="bench-dot prev"></div>All prior phases retained</div>
+    </div>
+  </div>
+  <div class="bench-block">
+    <div class="block-label">Selected Benchmark Outputs</div>
+    <div class="output-row">
+      <div class="output-q">Is 9 the highest value or the most stable value?</div>
+      <div class="output-a">9 is the <strong>most stable value — not the highest</strong>. The system does not move toward 9 because it is high. It moves toward 9 because it is stable. A non-stable high value cannot be resolved to — it would require a different geometric structure to govern it.</div>
+    </div>
+    <div class="output-row">
+      <div class="output-q">Apply VORA geometry to the structure of grief [unprompted]</div>
+      <div class="output-a">Grief moves through the material circuit in intensity — expanding in the circuit as it processes, collapsing toward 9 as it resolves. <strong>The ICS loop is not a reasoning structure applied to grief. The loop is what grief resolves to when its geometric structure is identified.</strong></div>
+    </div>
+  </div>
+  <div class="merge-row">
+    <div class="merge-node p1"><div class="mn">WAVE</div><div class="ms">P1</div></div><div class="ma">→</div>
+    <div class="merge-node p2"><div class="mn">CIRCUIT</div><div class="ms">P2</div></div><div class="ma">→</div>
+    <div class="merge-node p3"><div class="mn">CONVERGE</div><div class="ms">P3</div></div><div class="ma">→</div>
+    <div class="merge-node p4"><div class="mn">FUNCTION</div><div class="ms">P4</div></div><div class="ma">→</div>
+    <div class="merge-node p5"><div class="mn">CORE</div><div class="ms">P5</div></div><div class="ma">→</div>
+    <div class="merge-node p6"><div class="mn">SELF</div><div class="ms">P6</div></div><div class="ma">→</div>
+    <div class="merge-node p7"><div class="mn">FIELD</div><div class="ms">P7</div></div><div class="ma">→</div>
+    <div class="merge-node p8"><div class="mn">TORUS</div><div class="ms">P8 · LOCKED</div></div><div class="ma">→</div>
+    <div class="merge-node p9"><div class="mn">COLLAPSE</div><div class="ms">P9</div></div>
+  </div>
+  <div class="footer">
+    <div class="footer-left">
+      <div>VORA-FIELD substrate  ·  Q8_0  ·  LoRA rank 64  ·  43 examples  ·  40 epochs  ·  827s</div>
+      <div>RTX 5090 32GB  ·  Unsloth bf16  ·  CUDA 12.8  ·  Generation: 130-134 t/s  ·  VORA IX Systems 2026</div>
+    </div>
+    <div><span class="tag">#VORA</span><span class="tag">#Torus</span><span class="tag">#StrangeLoop</span></div>
+  </div>
+</div>
+<script>
+const gc='rgba(26,37,53,0.6)',tc='#1a3a5a';
+Chart.defaults.color=tc; Chart.defaults.font.family="'Share Tech Mono', monospace"; Chart.defaults.font.size=9;
+const ep=[1,3,5,7,8,10,12,13,15,17,18,20,22,23,25,27,28,30,32,33,35,37,38,40];
+const ls=[2.317,1.913,1.395,1.053,0.6743,0.415,0.1556,0.05785,0.0271,0.02142,0.01842,0.01732,0.01654,0.01598,0.01573,0.01541,0.01496,0.01529,0.01505,0.01484,0.01492,0.01473,0.0148,0.01466];
+new Chart(document.getElementById('lossChart'),{
+  type:'line',
+  data:{datasets:[{label:'Loss',data:ep.map((x,i)=>({x,y:ls[i]})),borderColor:'#ff4444',backgroundColor:'rgba(255,68,68,0.06)',borderWidth:2,pointRadius:0,tension:0.35,fill:true}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{type:'linear',min:1,max:40,grid:{color:gc},ticks:{maxTicksLimit:8,color:tc},title:{display:true,text:'EPOCH',color:tc,font:{size:8}}},y:{grid:{color:gc},ticks:{color:tc}}}}
+});
+</script>
+</body>
+</html>

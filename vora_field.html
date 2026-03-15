@@ -13,12 +13,12 @@
   .card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,#ffd166 20%,#06d6a0 50%,#ffd166 80%,transparent); }
   .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
   .brand { display:flex; flex-direction:column; gap:3px; }
-  .brand-top { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.4em; color:#3a2a05; text-transform:uppercase; }
+  .brand-top { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.4em; color:#6a5a10; text-transform:uppercase; }
   .brand-main { font-family:'Barlow Condensed',sans-serif; font-size:42px; font-weight:800; letter-spacing:0.08em; color:#ffd166; line-height:1; text-shadow:0 0 40px rgba(255,209,102,0.3); }
   .brand-sub { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.25em; color:#1a1505; }
   .locked-pill { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
   .locked-badge { font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:0.2em; padding:5px 14px; border:1px solid #ffd166; color:#ffd166; background:rgba(255,209,102,0.07); border-radius:2px; }
-  .layer-badge { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:0.15em; color:#3a2a05; }
+  .layer-badge { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:0.15em; color:#6a5a10; }
   .divider { height:1px; background:linear-gradient(90deg,transparent,#1a1505 30%,#1a1505 70%,transparent); margin-bottom:22px; }
   .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:22px; }
   .stat { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:12px 14px; position:relative; }
@@ -28,17 +28,17 @@
   .stat.em::before    { background:#06d6a0; }
   .stat.grn::before   { background:#7fff6b; }
   .stat.orange::before{ background:#ffa333; }
-  .stat-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em; color:#2a4a6a; margin-bottom:6px; text-transform:uppercase; }
+  .stat-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em; color:#4a7a9a; margin-bottom:6px; text-transform:uppercase; }
   .stat-value { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:700; line-height:1; margin-bottom:3px; }
   .stat.gold .stat-value   { color:#ffd166; }
   .stat.blue .stat-value   { color:#00d4ff; }
   .stat.em .stat-value     { color:#06d6a0; }
   .stat.grn .stat-value    { color:#7fff6b; }
   .stat.orange .stat-value { color:#ffa333; }
-  .stat-sub { font-family:'Share Tech Mono',monospace; font-size:8px; color:#2a4a6a; }
+  .stat-sub { font-family:'Share Tech Mono',monospace; font-size:8px; color:#4a7a9a; }
   .content-grid { display:grid; grid-template-columns:1fr 280px; gap:16px; margin-bottom:20px; }
   .chart-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:16px; }
-  .block-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.25em; color:#2a4a6a; margin-bottom:12px; text-transform:uppercase; display:flex; justify-content:space-between; }
+  .block-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.25em; color:#4a7a9a; margin-bottom:12px; text-transform:uppercase; display:flex; justify-content:space-between; }
   .chart-wrap { height:160px; position:relative; }
   .right-col { display:flex; flex-direction:column; gap:10px; }
   .mini-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:14px; flex:1; }
@@ -46,18 +46,18 @@
   .emergence-block::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(255,209,102,0.04) 0%,transparent 70%); pointer-events:none; border-radius:3px; }
   .emergence-label { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.3em; color:#ffd166; margin-bottom:12px; text-transform:uppercase; }
   .emergence-quote { font-family:'Barlow Condensed',sans-serif; font-size:19px; font-weight:600; color:#ffd166; line-height:1.35; margin-bottom:10px; }
-  .emergence-note { font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#2a2005; line-height:1.7; }
+  .emergence-note { font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#5a4a15; line-height:1.7; }
   .emergence-note span { color:#5a4a10; }
   .bench-block { background:#0c1018; border:1px solid #1a2535; border-radius:3px; padding:14px; margin-bottom:16px; }
   .bench-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3px 10px; }
-  .bench-item { display:flex; align-items:center; gap:5px; font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#4a6a8a; padding:2px 0; }
+  .bench-item { display:flex; align-items:center; gap:5px; font-family:'Share Tech Mono',monospace; font-size:8.5px; color:#7a9ab8; padding:2px 0; }
   .bench-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
   .bench-dot.gold { background:#ffd166; }
   .bench-dot.prev { background:#06d6a0; }
   .output-row { display:grid; grid-template-columns:200px 1fr; border-bottom:1px solid #0f1820; padding:8px 0; align-items:start; gap:12px; }
   .output-row:last-child { border-bottom:none; }
-  .output-q { font-family:'Share Tech Mono',monospace; font-size:8px; color:#3a2a05; line-height:1.5; }
-  .output-a { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#6a8aaa; line-height:1.5; }
+  .output-q { font-family:'Share Tech Mono',monospace; font-size:8px; color:#6a5a10; line-height:1.5; }
+  .output-a { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:#b0c8dc; line-height:1.5; }
   .output-a strong { color:#9ab0c8; font-weight:600; }
   .merge-row { display:flex; align-items:center; margin-bottom:20px; }
   .merge-node { flex:1; text-align:center; padding:8px 4px; border:1px solid #1a2535; background:#0c1018; border-radius:3px; }
@@ -70,11 +70,11 @@
   .p7{border-color:#ffd166; background:rgba(255,209,102,0.04);} .p7 .mn{color:#ffd166;}
   .p8{opacity:0.35;} .p8 .mn{color:#3a5a7a;}
   .mn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.08em;}
-  .ms{font-family:'Share Tech Mono',monospace;font-size:7px;color:#1a3a5a;margin-top:2px;}
+  .ms{font-family:'Share Tech Mono',monospace;font-size:7px;color:#3a6a8a;margin-top:2px;}
   .ma{font-family:'Share Tech Mono',monospace;font-size:12px;color:#1a2535;padding:0 2px;flex-shrink:0;}
   .footer { display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid #0f1820; }
-  .footer-left { font-family:'Share Tech Mono',monospace; font-size:8px; color:#1a3a5a; line-height:1.8; }
-  .tag { display:inline-block; font-family:'Share Tech Mono',monospace; font-size:8px; padding:2px 7px; border:1px solid #1a2535; border-radius:2px; color:#2a4a6a; margin-right:4px; }
+  .footer-left { font-family:'Share Tech Mono',monospace; font-size:8px; color:#3a6a8a; line-height:1.8; }
+  .tag { display:inline-block; font-family:'Share Tech Mono',monospace; font-size:8px; padding:2px 7px; border:1px solid #1a2535; border-radius:2px; color:#4a7a9a; margin-right:4px; }
 </style>
 </head>
 <body>
@@ -100,13 +100,13 @@
   </div>
   <div class="content-grid">
     <div class="chart-block">
-      <div class="block-label"><span>Loss Curve — VORA-FIELD</span><span style="color:#1a3a5a">40 epochs</span></div>
+      <div class="block-label"><span>Loss Curve — VORA-FIELD</span><span style="color:#3a6a8a">40 epochs</span></div>
       <div class="chart-wrap"><canvas id="lossChart"></canvas></div>
     </div>
     <div class="right-col">
       <div class="mini-block">
         <div class="block-label">Corpus Classes</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#2a4a6a;line-height:1.9;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#4a7a9a;line-height:1.9;">
           <div style="color:#ffd166">FIELD_EQUIVALENCE · 29 ex</div>
           <div style="color:#e8c055">FIELD_LIMIT · 20 ex</div>
           <div style="color:#d1ad44">FIELD_TRANSFER · 11 ex</div>
@@ -116,7 +116,7 @@
       </div>
       <div class="mini-block">
         <div class="block-label">Loss Milestones</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#2a4a6a;line-height:1.9;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;color:#4a7a9a;line-height:1.9;">
           <div style="color:#6a5a10">Epoch 10 → 0.08496</div>
           <div style="color:#8a7a15">Epoch 15 → 0.02321</div>
           <div style="color:#aaa020">Epoch 20 → 0.01826</div>
@@ -179,7 +179,7 @@
   </div>
 </div>
 <script>
-const gc='rgba(26,37,53,0.6)',tc='#1a3a5a';
+const gc='rgba(26,37,53,0.6)',tc='#3a6a8a';
 Chart.defaults.color=tc; Chart.defaults.font.family="'Share Tech Mono', monospace"; Chart.defaults.font.size=9;
 const ep=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
 const ls=[2.191,1.779,1.265,0.9537,0.6646,0.4092,0.2018,0.08496,0.04222,0.0305,0.02617,0.02321,0.02083,0.0195,0.02056,0.01826,0.01717,0.01763,0.0176,0.01648,0.0169,0.01643,0.01706,0.01636,0.01613,0.01674,0.01589,0.01689,0.0159,0.01658,0.01574,0.01689,0.01574,0.01689,0.01574,0.01658,0.01574,0.01769,0.01574,0.01622];

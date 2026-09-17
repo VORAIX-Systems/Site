@@ -179,3 +179,6 @@ a:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
   .lost .field { padding: 24px 20px; }
   .lost .rule { margin: 16px -20px 14px; }
 }
+
+/* one word per line, so V · O · R · A reads down the left edge */
+.head span { display: block; }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://voraix.com/sitemap.xml

@@ -206,30 +206,43 @@
   }
 
   const PERIOD = 200000; // one full turn every 200 s
+  const STEP   = 125;    // redraw 8×/s — at 1.8°/s the steps are invisible
   let phi = 0;
-  function frame(now) {
-    phi = -((now % PERIOD) / PERIOD) * 2 * Math.PI;
+
+  function step() {
+    if (!still) phi = -((performance.now() % PERIOD) / PERIOD) * 2 * Math.PI;
     drawVortex(phi);
     const th = document.getElementById('theta');
     if (th) th.textContent = `θ ${((-phi * 180 / Math.PI) % 360).toFixed(2).padStart(6, '0')}°`;
-    requestAnimationFrame(frame);
   }
 
   function render() {
     layout();
     drawStatic();
-    drawVortex(phi);
+    step();
     tickClock();
   }
 
-  new ResizeObserver(render).observe(field);
+  // run only while the drawing is on screen and the tab is visible
+  let onScreen = true, timer = null;
+  function sync() {
+    const run = !still && onScreen && !document.hidden;
+    if (run && !timer) { step(); timer = setInterval(step, STEP); }
+    if (!run && timer) { clearInterval(timer); timer = null; }
+  }
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; sync(); }).observe(field);
+  document.addEventListener('visibilitychange', sync);
+
+  // one render per frame at most, however many resize events arrive
+  let queued = false;
+  new ResizeObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; render(); });
+  }).observe(field);
+
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
   setInterval(tickClock, 1000);
   render();
-  if (still) {
-    const th = document.getElementById('theta');
-    if (th) th.textContent = 'θ 000.00°';
-  } else {
-    requestAnimationFrame(frame);
-  }
+  sync();
 })();
